@@ -351,7 +351,7 @@ const AvaliacoesTab: React.FC = () => {
                 <img
                   src={review.brandLogo}
                   alt={review.brandName}
-                  className="w-12 h-12 rounded-lg object-cover"
+                  className="w-12 h-12 rounded-lg object-cover object-top"
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">

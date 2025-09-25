@@ -24,12 +24,12 @@ import {
 } from 'react-icons/hi';
 import { Icon } from '@iconify/react';
 import CardBox from 'src/components/shared/CardBox';
-import PostagensTab from '../../components/dashboard/PostagensTab';
+import PostagensTab from './tabs/PostagensTab';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import LazyImage from 'src/components/shared/LazyImage';
-import RedesSociaisTab from './components/RedesSociaisTab';
-import CampanhasTab from './components/CampanhasTab';
-import AvaliacoesTab from './components/AvaliacoesTab';
+import RedesSociaisTab from './tabs/RedesSociaisTab';
+import CampanhasTab from './tabs/CampanhasTab';
+import AvaliacoesTab from './tabs/AvaliacoesTab';
 
 // Mock data para o perfil do influenciador
 const influencerData = {
@@ -366,7 +366,7 @@ const InfluencerProfile: React.FC = () => {
                 <img
                   src={influencerData.avatar}
                   alt={influencerData.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
               {influencerData.verified && (
@@ -459,7 +459,7 @@ const InfluencerProfile: React.FC = () => {
                 <img
                   src={story.thumbnail}
                   alt={story.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
               <div className="text-xs font-medium text-gray-700 dark:text-gray-300 max-w-[64px] sm:max-w-[80px] truncate group-hover:text-[#635bFF] transition-colors">
@@ -576,7 +576,7 @@ const InfluencerProfile: React.FC = () => {
                   <LazyImage
                     src={post.thumbnail}
                     alt={`Post ${post.id}`}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
                   />
                   
                   {/* Overlay com estatísticas - Responsivo */}
@@ -661,7 +661,7 @@ const InfluencerProfile: React.FC = () => {
               <img
                 src={currentVideo.thumbnail}
                 alt={currentVideo.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-top"
               />
               
               {/* Controles de Navegação */}

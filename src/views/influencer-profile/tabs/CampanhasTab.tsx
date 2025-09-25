@@ -17,7 +17,7 @@ import {
   HiSearch,
   HiCalendar,
   HiTrendingUp,
-  HiTarget,
+  HiLocationMarker,
   HiDocumentText,
   HiStar,
   HiExternalLink,
@@ -369,7 +369,7 @@ const CampanhasTab: React.FC = () => {
 
             {/* Objetivo */}
             <div className="flex items-center gap-2 mb-4">
-              <HiTarget className="w-4 h-4 text-blue-500" />
+              <HiLocationMarker className="w-4 h-4 text-blue-500" />
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {campanha.objective}
               </span>
@@ -536,7 +536,7 @@ const CampanhasTab: React.FC = () => {
                         <img
                           src={post.thumbnail}
                           alt={`Post ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg"
+                          className="w-full h-32 object-cover object-top rounded-lg"
                         />
                         <div className="absolute top-2 right-2">
                           {getPlatformIcon(post.platform)}
