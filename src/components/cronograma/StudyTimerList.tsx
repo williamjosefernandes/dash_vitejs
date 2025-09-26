@@ -8,7 +8,11 @@ import StudyDisciplineHeader from './StudyDisciplineHeader';
 import StudyTopicItem from './StudyTopicItem';
 import { StudyDiscipline } from 'src/types/cronograma';
 
-const StudyTimerList: React.FC = () => {
+interface StudyTimerListProps {
+  viewMode?: 'grid' | 'list' | 'calendar';
+}
+
+const StudyTimerList: React.FC<StudyTimerListProps> = ({ viewMode = 'grid' }) => {
   const {
     disciplines,
     stats,
@@ -194,13 +198,23 @@ const StudyTimerList: React.FC = () => {
     <div className="space-y-6">
 
       {/* Lista de disciplinas */}
-      <div className="space-y-4">
+      <div className={`${
+        viewMode === 'grid' 
+          ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' 
+          : viewMode === 'calendar'
+          ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'
+          : 'space-y-4'
+      }`}>
         {disciplines.map((discipline) => {
           const { completedTopics, inProgressTopics } = getDisciplineStats(discipline);
           const isExpanded = expandedDisciplines.has(discipline.id);
 
           return (
-            <div key={discipline.id}>
+            <div key={discipline.id} className={`${
+              viewMode === 'grid' || viewMode === 'calendar' 
+                ? 'bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4' 
+                : ''
+            }`}>
               <StudyDisciplineHeader
                 discipline={discipline}
                 isExpanded={isExpanded}
@@ -211,11 +225,16 @@ const StudyTimerList: React.FC = () => {
                 getFormattedTime={getFormattedTime}
                 completedTopics={completedTopics}
                 inProgressTopics={inProgressTopics}
+                viewMode={viewMode}
               />
 
               {/* Lista de tópicos */}
               {isExpanded && (
-                <div className="ml-6 space-y-3">
+                <div className={`${
+                  viewMode === 'grid' || viewMode === 'calendar' 
+                    ? 'mt-4 space-y-2' 
+                    : 'ml-6 space-y-3'
+                }`}>
                   {discipline.topics.length === 0 ? (
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
                       <Icon 
@@ -240,14 +259,15 @@ const StudyTimerList: React.FC = () => {
                         key={topic.id}
                         topic={topic}
                         disciplineColor={discipline.color}
-                        onStart={() => startTopicTimer(discipline.id, topic.id)}
-                        onStop={() => stopTopicTimer(discipline.id, topic.id)}
-                        onReset={() => resetTopicTimer(discipline.id, topic.id)}
+                        onStartTimer={() => startTopicTimer(discipline.id, topic.id)}
+                        onStopTimer={() => stopTopicTimer(discipline.id, topic.id)}
+                        onResetTimer={() => resetTopicTimer(discipline.id, topic.id)}
                         onComplete={() => markTopicComplete(discipline.id, topic.id)}
                         onEdit={() => handleOpenTopicModal(discipline.id, topic)}
                         onDelete={() => deleteTopic(discipline.id, topic.id)}
                         getFormattedTime={getFormattedTime}
-                        getCurrentTime={(topicId) => topic.currentTime || 0}
+                        getCurrentTime={() => topic.currentTime || 0}
+                        viewMode={viewMode}
                       />
                     ))
                   )}

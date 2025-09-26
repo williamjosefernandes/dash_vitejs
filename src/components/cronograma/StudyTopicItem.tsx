@@ -25,6 +25,7 @@ interface StudyTopicItemProps {
   onDelete: () => void;
   getCurrentTime: () => number;
   getFormattedTime: (milliseconds: number) => string;
+  viewMode?: 'grid' | 'list' | 'calendar';
 }
 
 const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
@@ -38,6 +39,7 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
   onDelete,
   getCurrentTime,
   getFormattedTime,
+  viewMode = 'list',
 }) => {
   const [currentTime, setCurrentTime] = useState(getCurrentTime());
 
@@ -100,15 +102,25 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-all duration-200">
+    <div className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200 ${
+      viewMode === 'grid' || viewMode === 'calendar' 
+        ? 'p-3' 
+        : 'p-4'
+    }`}>
       {/* Header do tópico */}
-      <div className="flex items-start justify-between mb-3">
+      <div className={`flex items-start justify-between ${
+        viewMode === 'grid' || viewMode === 'calendar' ? 'mb-2' : 'mb-3'
+      }`}>
         <div className="flex items-start flex-1 min-w-0">
           {/* Indicador de status */}
-          <div className="flex-shrink-0 mr-3 mt-1">
+          <div className={`flex-shrink-0 mr-3 ${
+            viewMode === 'grid' || viewMode === 'calendar' ? 'mt-0.5' : 'mt-1'
+          }`}>
             <Icon 
               icon={getStatusIcon(topic.status)}
-              className={`w-5 h-5 ${
+              className={`${
+                viewMode === 'grid' || viewMode === 'calendar' ? 'w-4 h-4' : 'w-5 h-5'
+              } ${
                 topic.status === 'not_studied' ? 'text-gray-400' :
                 topic.status === 'in_progress' ? 'text-orange-500' :
                 'text-green-500'
@@ -118,23 +130,30 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
           
           {/* Nome e descrição */}
           <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+            <h4 className={`font-medium text-gray-900 dark:text-white line-clamp-1 ${
+              viewMode === 'grid' || viewMode === 'calendar' ? 'text-xs' : 'text-sm'
+            }`}>
               {topic.name}
             </h4>
-            {topic.description && (
+            {topic.description && viewMode === 'list' && (
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
                 {topic.description}
               </p>
             )}
             
             {/* Status badge */}
-            <div className="flex items-center gap-2 mt-2">
+            <div className={`flex items-center gap-2 ${
+              viewMode === 'grid' || viewMode === 'calendar' ? 'mt-1' : 'mt-2'
+            }`}>
               <Badge color={getStatusColor(topic.status)} size="sm">
-                {getStatusText(topic.status)}
+                {viewMode === 'grid' || viewMode === 'calendar' 
+                  ? getStatusText(topic.status).substring(0, 8) + (getStatusText(topic.status).length > 8 ? '...' : '')
+                  : getStatusText(topic.status)
+                }
               </Badge>
               
-              {/* Meta de horas */}
-              {topic.targetHours && (
+              {/* Meta de horas - apenas em list view */}
+              {topic.targetHours && viewMode === 'list' && (
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                   Meta: {topic.targetHours}h
                 </span>
@@ -165,17 +184,27 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
       </div>
 
       {/* Cronômetro */}
-      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-3">
-        <div className="flex items-center justify-between mb-2">
+      <div className={`bg-gray-50 dark:bg-gray-700 rounded-lg ${
+        viewMode === 'grid' || viewMode === 'calendar' ? 'p-2 mb-2' : 'p-3 mb-3'
+      }`}>
+        <div className={`flex items-center justify-between ${
+          viewMode === 'grid' || viewMode === 'calendar' ? 'mb-1' : 'mb-2'
+        }`}>
           <div className="flex items-center gap-2">
-            <HiClock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-              Tempo de Estudo
-            </span>
+            <HiClock className={`text-gray-500 dark:text-gray-400 ${
+              viewMode === 'grid' || viewMode === 'calendar' ? 'w-3 h-3' : 'w-4 h-4'
+            }`} />
+            {viewMode === 'list' && (
+              <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                Tempo de Estudo
+              </span>
+            )}
           </div>
           
           {/* Tempo atual */}
-          <div className={`text-lg font-mono font-bold ${
+          <div className={`font-mono font-bold ${
+            viewMode === 'grid' || viewMode === 'calendar' ? 'text-sm' : 'text-lg'
+          } ${
             topic.isTimerRunning 
               ? 'text-green-600 dark:text-green-400' 
               : 'text-gray-900 dark:text-white'
@@ -191,16 +220,21 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
             color={topic.isTimerRunning ? "failure" : "success"}
             onClick={topic.isTimerRunning ? onStopTimer : onStartTimer}
             disabled={topic.status === 'completed'}
+            className={viewMode === 'grid' || viewMode === 'calendar' ? 'px-2 py-1' : ''}
           >
             {topic.isTimerRunning ? (
               <>
-                <HiPause className="w-3 h-3 mr-1" />
-                Pausar
+                <HiPause className={`${
+                  viewMode === 'grid' || viewMode === 'calendar' ? 'w-2 h-2' : 'w-3 h-3'
+                } mr-1`} />
+                {viewMode === 'list' ? 'Pausar' : 'P'}
               </>
             ) : (
               <>
-                <HiPlay className="w-3 h-3 mr-1" />
-                Iniciar
+                <HiPlay className={`${
+                  viewMode === 'grid' || viewMode === 'calendar' ? 'w-2 h-2' : 'w-3 h-3'
+                } mr-1`} />
+                {viewMode === 'list' ? 'Iniciar' : 'I'}
               </>
             )}
           </Button>
@@ -209,16 +243,19 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
             size="xs"
             color="gray"
             onClick={onResetTimer}
+            className={viewMode === 'grid' || viewMode === 'calendar' ? 'px-2 py-1' : ''}
             disabled={topic.isTimerRunning || currentTime === 0}
           >
-            <HiStop className="w-3 h-3 mr-1" />
-            Reset
+            <HiStop className={`${
+              viewMode === 'grid' || viewMode === 'calendar' ? 'w-2 h-2' : 'w-3 h-3'
+            } mr-1`} />
+            {viewMode === 'list' ? 'Reset' : 'R'}
           </Button>
         </div>
       </div>
 
-      {/* Barra de progresso (se houver meta) */}
-      {topic.targetHours && topic.targetHours > 0 && (
+      {/* Barra de progresso (se houver meta) - apenas em list view */}
+      {topic.targetHours && topic.targetHours > 0 && viewMode === 'list' && (
         <div className="mb-3">
           <header className="flex justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
             <label>Progresso da Meta</label>
@@ -239,17 +276,46 @@ const StudyTopicItem: React.FC<StudyTopicItemProps> = ({
         </div>
       )}
 
+      {/* Progresso compacto para grid/calendar */}
+      {topic.targetHours && topic.targetHours > 0 && (viewMode === 'grid' || viewMode === 'calendar') && (
+        <div className="mb-2">
+          <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1">
+            <div
+              className="h-1 rounded-full transition-all duration-300"
+              style={{ 
+                width: `${getProgressPercentage()}%`,
+                backgroundColor: disciplineColor 
+              }}
+            ></div>
+          </div>
+          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <span>{getProgressPercentage().toFixed(0)}%</span>
+            <span>{topic.targetHours}h</span>
+          </div>
+        </div>
+      )}
+
       {/* Estatísticas do tópico */}
-      <section className="grid grid-cols-2 gap-4 text-center pt-3 border-t border-gray-200 dark:border-gray-600">
+      <section className={`grid grid-cols-2 gap-4 text-center border-t border-gray-200 dark:border-gray-600 ${
+        viewMode === 'grid' || viewMode === 'calendar' ? 'pt-2' : 'pt-3'
+      }`}>
         <article>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Sessões</p>
-          <p className="text-sm font-semibold text-gray-900 dark:text-white">
+          <p className={`text-gray-500 dark:text-gray-400 ${
+            viewMode === 'grid' || viewMode === 'calendar' ? 'text-xs' : 'text-xs'
+          }`}>Sessões</p>
+          <p className={`font-semibold text-gray-900 dark:text-white ${
+            viewMode === 'grid' || viewMode === 'calendar' ? 'text-xs' : 'text-sm'
+          }`}>
             {topic.sessions.length}
           </p>
         </article>
         <article>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Tempo Total</p>
-          <p className="text-sm font-semibold text-gray-900 dark:text-white">
+          <p className={`text-gray-500 dark:text-gray-400 ${
+            viewMode === 'grid' || viewMode === 'calendar' ? 'text-xs' : 'text-xs'
+          }`}>Tempo Total</p>
+          <p className={`font-semibold text-gray-900 dark:text-white ${
+            viewMode === 'grid' || viewMode === 'calendar' ? 'text-xs' : 'text-sm'
+          }`}>
             {getFormattedTime(topic.totalStudyTime)}
           </p>
         </article>

@@ -5,7 +5,7 @@ import { HiClock, HiPlay, HiPause, HiStop, HiTrendingUp, HiViewGrid, HiViewList,
 import StudyTimerList from '../../components/cronograma/StudyTimerList';
 
 const CronogramaPage: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'calendar'>('grid');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   
@@ -83,7 +83,7 @@ const CronogramaPage: React.FC = () => {
                   />
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-                  Cronômetro de Estudos
+                  Cronograma de Estudos
                 </h1>
               </div>
               <p className="text-base text-gray-600 dark:text-gray-400 max-w-2xl">
@@ -115,6 +115,17 @@ const CronogramaPage: React.FC = () => {
                   title="Visualização em lista"
                 >
                   <HiViewList className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode('calendar')}
+                  className={`p-2.5 rounded-md transition-all duration-200 ${
+                    viewMode === 'calendar'
+                      ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm border border-gray-200 dark:border-gray-500'
+                      : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
+                  }`}
+                  title="Visualização em calendário"
+                >
+                  <HiCalendar className="w-4 h-4" />
                 </button>
               </div>
 
@@ -201,7 +212,7 @@ const CronogramaPage: React.FC = () => {
             </Button>
           </div>
           
-          <StudyTimerList />
+          <StudyTimerList viewMode={viewMode} />
         </div>
       </div>
     </div>
