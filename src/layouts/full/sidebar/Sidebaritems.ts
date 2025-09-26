@@ -28,7 +28,7 @@ const SidebarContent: MenuItem[] = [
     heading: "HOME",
     children: [
       {
-        name: "Dashboard",
+        name: "Home",
         icon: "solar:widget-add-line-duotone",
         id: uniqueId(),
         url: "/",
@@ -54,31 +54,10 @@ const SidebarContent: MenuItem[] = [
         isPro: false,
       },
       {
-        name: "Conteúdo",
-        icon: "solar:library-bold-duotone",
+        name: "Cronograma",
+        icon: "solar:calendar-bold-duotone",
         id: uniqueId(),
-        url: "/content",
-        isPro: false,
-      },
-      {
-        name: "Resumos",
-        icon: "solar:document-text-bold-duotone",
-        id: uniqueId(),
-        url: "/summaries",
-        isPro: false,
-      },
-      {
-        name: "Simulados",
-        icon: "solar:test-tube-bold-duotone",
-        id: uniqueId(),
-        url: "/simulations",
-        isPro: false,
-      },
-      {
-        name: "Insights",
-        icon: "solar:chart-bold-duotone",
-        id: uniqueId(),
-        url: "/insights",
+        url: "/cronograma",
         isPro: false,
       },
       {
@@ -96,10 +75,10 @@ const SidebarContent: MenuItem[] = [
         isPro: false,
       },
       {
-        name: "Cronograma",
-        icon: "solar:calendar-bold-duotone",
+        name: "Simulados",
+        icon: "solar:test-tube-bold-duotone",
         id: uniqueId(),
-        url: "/cronograma",
+        url: "/simulations",
         isPro: false,
       },
       {
@@ -107,70 +86,6 @@ const SidebarContent: MenuItem[] = [
         icon: "solar:settings-bold-duotone",
         id: uniqueId(),
         url: "/settings",
-        isPro: false,
-      },
-    ],
-  },
-  {
-    heading: "UI COMPONENTS",
-    children: [
-      {
-        name: "Typography",
-        icon: "solar:text-bold-duotone",
-        id: uniqueId(),
-        url: "/ui/typography",
-        isPro: false,
-      },
-      {
-        name: "Table",
-        icon: "solar:table-bold-duotone",
-        id: uniqueId(),
-        url: "/ui/table",
-        isPro: false,
-      },
-      {
-        name: "Form",
-        icon: "solar:form-bold-duotone",
-        id: uniqueId(),
-        url: "/ui/form",
-        isPro: false,
-      },
-      {
-        name: "Alert",
-        icon: "solar:bell-bold-duotone",
-        id: uniqueId(),
-        url: "/ui/alert",
-        isPro: false,
-      },
-      {
-        name: "Shadow",
-        icon: "solar:layers-bold-duotone",
-        id: uniqueId(),
-        url: "/ui/shadow",
-        isPro: false,
-      },
-    ],
-  },
-  {
-    heading: "ICONS",
-    children: [
-      {
-        name: "Solar Icons",
-        icon: "solar:star-bold-duotone",
-        id: uniqueId(),
-        url: "/icons/solar",
-        isPro: false,
-      },
-    ],
-  },
-  {
-    heading: "EXTRAS",
-    children: [
-      {
-        name: "Sample Page",
-        icon: "solar:page-bold-duotone",
-        id: uniqueId(),
-        url: "/sample-page",
         isPro: false,
       },
     ],
