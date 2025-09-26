@@ -1037,17 +1037,6 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
                     </div>
                   </div>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                      <Icon icon="solar:target-bold" className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Meta Diária</p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-white">85%</p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* Calendar Header */}
@@ -1313,16 +1302,98 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
                 </div>
               </div>
 
-              {/* Subject Legend */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">Legenda das Disciplinas</h3>
-                <div className="flex flex-wrap gap-3">
-                  {Object.entries(subjectColors).map(([subject, colors]) => (
-                    <div key={subject} className="flex items-center space-x-2">
-                      <div className={`w-3 h-3 rounded-full ${colors.bg} ${colors.border} border`}></div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{subject}</span>
-                    </div>
-                  ))}
+              {/* Quadro de Resumo das Disciplinas */}
+              <div className="mb-8">
+                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                  <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Resumo das Disciplinas</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Visão geral do progresso e planejamento</p>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Disciplina</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Conteúdo Total</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Previsão de Término</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Prioridade</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Planos de Estudo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          {
+                            disciplina: 'Matemática',
+                            conteudoTotal: '24 tópicos, 96 subtópicos',
+                            previsaoTermino: '15 de Dezembro, 2025',
+                            prioridade: 'Alta',
+                            planosEstudo: 'Revisão Intensiva, Exercícios Práticos'
+                          },
+                          {
+                            disciplina: 'Física',
+                            conteudoTotal: '18 tópicos, 72 subtópicos',
+                            previsaoTermino: '20 de Novembro, 2025',
+                            prioridade: 'Alta',
+                            planosEstudo: 'Teoria + Laboratório, Simulações'
+                          },
+                          {
+                            disciplina: 'Química',
+                            conteudoTotal: '15 tópicos, 60 subtópicos',
+                            previsaoTermino: '10 de Novembro, 2025',
+                            prioridade: 'Média',
+                            planosEstudo: 'Estudo Teórico, Experimentos'
+                          },
+                          {
+                            disciplina: 'Biologia',
+                            conteudoTotal: '12 tópicos, 48 subtópicos',
+                            previsaoTermino: '25 de Outubro, 2025',
+                            prioridade: 'Média',
+                            planosEstudo: 'Leitura Dirigida, Mapas Mentais'
+                          },
+                          {
+                            disciplina: 'História',
+                            conteudoTotal: '20 tópicos, 80 subtópicos',
+                            previsaoTermino: '30 de Novembro, 2025',
+                            prioridade: 'Baixa',
+                            planosEstudo: 'Cronologia, Análise de Fontes'
+                          }
+                        ].map((item, index) => {
+                          const colors = subjectColors[item.disciplina as keyof typeof subjectColors] || subjectColors['Revisão'];
+                          const prioridadeColors = {
+                            'Alta': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+                            'Média': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+                            'Baixa': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
+                          };
+                          
+                          return (
+                            <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                              <td className="px-6 py-4">
+                                <div className="flex items-center space-x-3">
+                                  <div className={`w-3 h-3 rounded-full ${colors.bg} ${colors.border} border`}></div>
+                                  <span className="text-sm font-medium text-gray-900 dark:text-white">{item.disciplina}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                                {item.conteudoTotal}
+                              </td>
+                              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                                {item.previsaoTermino}
+                              </td>
+                              <td className="px-6 py-4">
+                                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${prioridadeColors[item.prioridade as keyof typeof prioridadeColors]}`}>
+                                  {item.prioridade}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                                {item.planosEstudo}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
