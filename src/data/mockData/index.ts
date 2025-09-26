@@ -1,23 +1,21 @@
-import { PlanningSettings } from '../../types/planning';
-
-// Exportações centralizadas dos dados mockados
-export * from './events';
+// Centralized exports for all mock data
 export * from './studyPlans';
-export * from './reviews';
-export * from './trails';
+export * from './events';
 export * from './content';
-export * from './summaries';
-export * from './simulations';
-export * from './insights';
 export * from './history';
+export * from './insights';
+export * from './reviews';
 export * from './settings';
+export * from './simulations';
+export * from './summaries';
+export * from './trails';
+
+// Importações necessárias para a função getDashboardData
+import { mockSubjects, mockStudyStats } from './studyPlans';
+import { mockEvents } from './events';
 
 // Re-exportação dos tipos para facilitar importação
 export type {
-  Event,
-  Participant,
-  Resource,
-  Reminder,
   StudyPlan,
   Subject,
   Topic,
@@ -27,8 +25,14 @@ export type {
   Metric,
   Instructor,
   StudyStats,
-  PlanningSettings
-} from '../../types/planning';
+  Resource
+} from './studyPlans';
+
+export type {
+  Event,
+  Participant,
+  Reminder
+} from './events';
 
 export type {
   Review,
@@ -71,37 +75,13 @@ export type {
   ErrorResponse
 } from '../../types/gabaritte';
 
-// Dados consolidados para dashboard
+// Função para obter dados do dashboard
 export const getDashboardData = () => {
   return {
-    totalEvents: 8,
-    activeStudyPlans: 4,
-    completedHours: 1250,
-    averageScore: 8.3,
-    upcomingDeadlines: 5,
-    streakDays: 15
+    totalSubjects: mockSubjects.length,
+    completedSubjects: mockSubjects.filter(s => s.progress === 100).length,
+    totalStudyHours: mockStudyStats.totalStudyHours,
+    weeklyAverage: mockStudyStats.weeklyAverage,
+    upcomingEvents: mockEvents.filter(e => e.status === 'scheduled').slice(0, 5)
   };
-};
-
-// Configurações padrão do sistema
-export const defaultPlanningSettings: PlanningSettings = {
-  defaultStudyDuration: 120, // 2 horas em minutos
-  breakInterval: 15, // 15 minutos
-  reminderSettings: {
-    enabled: true,
-    defaultTime: 30, // 30 minutos antes
-    types: ['push', 'email']
-  },
-  workingHours: {
-    start: '08:00',
-    end: '22:00',
-    workingDays: [1, 2, 3, 4, 5, 6] // Segunda a sábado
-  },
-  preferences: {
-    theme: 'light',
-    language: 'pt-BR',
-    timezone: 'America/Sao_Paulo',
-    dateFormat: 'DD/MM/YYYY',
-    timeFormat: '24h'
-  }
 };

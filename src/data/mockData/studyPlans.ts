@@ -1,14 +1,131 @@
-import { 
-  StudyPlan, 
-  Subject, 
-  Topic, 
-  Exercise, 
-  Goal, 
-  Milestone, 
-  Metric, 
-  Instructor,
-  StudyStats 
-} from '../../types/planning';
+// Tipos locais para planos de estudo (removidos da estrutura de planejamento)
+export interface Instructor {
+  id: string;
+  name: string;
+  email: string;
+  specialization: string[];
+  avatar: string;
+  rating: number;
+  bio?: string;
+}
+
+export interface Exercise {
+  id: string;
+  title: string;
+  type: 'multiple_choice' | 'essay' | 'practical' | 'coding';
+  difficulty: 'easy' | 'medium' | 'hard';
+  estimatedTime: number; // minutes
+  points: number;
+  status: 'not_started' | 'in_progress' | 'completed';
+  dueDate: string;
+  feedback?: string;
+  score?: number;
+}
+
+export interface Topic {
+  id: string;
+  name: string;
+  description: string;
+  estimatedHours: number;
+  completedHours: number;
+  progress: number;
+  status: 'not_started' | 'in_progress' | 'completed';
+  difficulty: 'easy' | 'medium' | 'hard';
+  prerequisites: string[];
+  resources: Resource[];
+  exercises: Exercise[];
+  deadline: string;
+}
+
+export interface Resource {
+  id: string;
+  name: string;
+  type: 'book' | 'video' | 'document' | 'equipment' | 'software';
+  url?: string;
+  description: string;
+  isRequired: boolean;
+}
+
+export interface Subject {
+  id: string;
+  name: string;
+  code: string;
+  description: string;
+  color: string;
+  icon: string;
+  topics: Topic[];
+  progress: number;
+  totalHours: number;
+  completedHours: number;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  priority: 'low' | 'medium' | 'high';
+  instructor: Instructor;
+}
+
+export interface Metric {
+  id: string;
+  name: string;
+  currentValue: number;
+  targetValue: number;
+  unit: string;
+  type: 'hours' | 'exercises' | 'score' | 'attendance';
+}
+
+export interface Goal {
+  id: string;
+  title: string;
+  description: string;
+  type: 'short_term' | 'medium_term' | 'long_term';
+  targetDate: string;
+  progress: number;
+  status: 'active' | 'completed' | 'paused' | 'cancelled';
+  metrics: Metric[];
+}
+
+export interface Milestone {
+  id: string;
+  title: string;
+  description: string;
+  targetDate: string;
+  completedDate?: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'overdue';
+  requirements: string[];
+  reward?: string;
+}
+
+export interface StudyPlan {
+  id: string;
+  title: string;
+  description: string;
+  subjects: Subject[];
+  duration: string;
+  progress: number;
+  status: 'active' | 'completed' | 'paused' | 'cancelled';
+  startDate: string;
+  endDate: string;
+  dailyHours: number;
+  weeklyGoal: number;
+  totalHours: number;
+  completedHours: number;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  goals: Goal[];
+  milestones: Milestone[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StudyStats {
+  totalStudyHours: number;
+  weeklyAverage: number;
+  monthlyAverage: number;
+  completedEvents: number;
+  pendingEvents: number;
+  subjectsInProgress: number;
+  completedSubjects: number;
+  averageScore: number;
+  streakDays: number;
+  productivityScore: number;
+}
 
 // Instrutores mockados
 export const mockInstructors: Instructor[] = [

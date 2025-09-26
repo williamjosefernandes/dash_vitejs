@@ -47,20 +47,6 @@ const SidebarContent: MenuItem[] = [
         isPro: false,
       },
       {
-        name: "Planejamento",
-        icon: "solar:calendar-bold-duotone",
-        id: uniqueId(),
-        url: "/planning/agile",
-        isPro: false,
-      },
-      {
-        name: "Revisões",
-        icon: "solar:refresh-bold-duotone",
-        id: uniqueId(),
-        url: "/reviews",
-        isPro: false,
-      },
-      {
         name: "Trilhas",
         icon: "solar:map-bold-duotone",
         id: uniqueId(),
@@ -107,6 +93,13 @@ const SidebarContent: MenuItem[] = [
         icon: "solar:graph-bold-duotone",
         id: uniqueId(),
         url: "/statistics",
+        isPro: false,
+      },
+      {
+        name: "Cronograma",
+        icon: "solar:calendar-bold-duotone",
+        id: uniqueId(),
+        url: "/cronograma",
         isPro: false,
       },
       {

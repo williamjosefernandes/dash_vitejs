@@ -325,7 +325,6 @@ const CampanhasTab: React.FC = () => {
             <option value="6months">Últimos 6 meses</option>
             <option value="1year">Último ano</option>
           </Select>
-          <div></div> {/* Espaço vazio para alinhamento */}
         </div>
       </div>
 

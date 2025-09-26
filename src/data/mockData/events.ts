@@ -1,4 +1,49 @@
-import { Event, Participant, Resource, Reminder } from '../../types/planning';
+// Tipos locais para eventos (removidos da estrutura de planejamento)
+export interface Participant {
+  id: string;
+  name: string;
+  email: string;
+  role: 'teacher' | 'student' | 'tutor';
+  avatar: string;
+  status: 'confirmed' | 'pending' | 'declined';
+}
+
+export interface Resource {
+  id: string;
+  name: string;
+  type: 'book' | 'video' | 'document' | 'equipment' | 'software';
+  url?: string;
+  description: string;
+  isRequired: boolean;
+}
+
+export interface Reminder {
+  id: string;
+  type: 'push' | 'email' | 'sms';
+  time: number; // minutes before event
+  message: string;
+}
+
+export interface Event {
+  id: string;
+  title: string;
+  type: 'class' | 'study' | 'meeting' | 'exam' | 'seminar' | 'workshop' | 'review' | 'assignment';
+  subject: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
+  location: string;
+  color: string;
+  participants: Participant[];
+  resources: Resource[];
+  reminders: Reminder[];
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
 
 // Participantes mockados
 export const mockParticipants: Participant[] = [

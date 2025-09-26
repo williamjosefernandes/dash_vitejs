@@ -3,7 +3,7 @@ import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Se
 import { Icon } from '@iconify/react';
 import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiClock, HiAcademicCap, HiTrendingUp, HiSearch } from 'react-icons/hi';
 import { mockSubjects } from '../../data/mockData';
-import { Subject } from '../../types/planning';
+import { Subject } from '../../data/mockData/studyPlans';
 
 const SubjectsPage: React.FC = () => {
   const [subjects, setSubjects] = useState<Subject[]>(mockSubjects);
@@ -98,7 +98,15 @@ const SubjectsPage: React.FC = () => {
         topics: [],
         progress: 0,
         totalHours: 0,
-        completedHours: 0
+        completedHours: 0,
+        instructor: {
+          id: 'temp-instructor',
+          name: 'Professor Temporário',
+          email: 'temp@example.com',
+          specialization: ['Geral'],
+          avatar: 'https://ui-avatars.com/api/?name=Professor+Temporario&background=6b7280&color=fff',
+          rating: 4.0
+        }
       };
       setSubjects([...subjects, newSubject]);
     } else if (modalMode === 'edit' && selectedSubject) {

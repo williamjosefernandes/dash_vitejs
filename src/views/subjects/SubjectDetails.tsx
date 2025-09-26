@@ -4,10 +4,10 @@ import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Se
 import { Icon } from '@iconify/react';
 import { 
   HiArrowLeft, HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, 
-  HiClock, HiCheckCircle, HiExclamationCircle, HiPlay, HiPause 
+  HiClock, HiCheckCircle, HiPlay, HiPause 
 } from 'react-icons/hi';
 import { mockSubjects, mockTopics } from '../../data/mockData';
-import { Subject, Topic } from '../../types/planning';
+import { Subject, Topic } from '../../data/mockData/studyPlans';
 
 const SubjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,12 +31,14 @@ const SubjectDetails: React.FC = () => {
     estimatedHours: number;
     difficulty: 'easy' | 'medium' | 'hard';
     prerequisites: string[];
+    deadline: string;
   }>({
     name: '',
     description: '',
     estimatedHours: 0,
     difficulty: 'medium',
-    prerequisites: []
+    prerequisites: [],
+    deadline: ''
   });
 
   if (!subject) {
@@ -58,7 +60,7 @@ const SubjectDetails: React.FC = () => {
     const completed = topics.filter(t => t.status === 'completed').length;
     const inProgress = topics.filter(t => t.status === 'in_progress').length;
     const notStarted = topics.filter(t => t.status === 'not_started').length;
-    const reviewNeeded = topics.filter(t => t.status === 'review_needed').length;
+    const reviewNeeded = 0; // Status 'review_needed' não existe na interface Topic
     
     return { total, completed, inProgress, notStarted, reviewNeeded };
   }, [topics]);
@@ -72,7 +74,8 @@ const SubjectDetails: React.FC = () => {
         description: topic.description || '',
         estimatedHours: topic.estimatedHours,
         difficulty: topic.difficulty,
-        prerequisites: topic.prerequisites || []
+        prerequisites: topic.prerequisites || [],
+        deadline: topic.deadline
       });
     } else {
       setSelectedTopic(null);
@@ -81,7 +84,8 @@ const SubjectDetails: React.FC = () => {
         description: '',
         estimatedHours: 0,
         difficulty: 'medium',
-        prerequisites: []
+        prerequisites: [],
+        deadline: ''
       });
     }
     setShowTopicModal(true);
@@ -96,7 +100,8 @@ const SubjectDetails: React.FC = () => {
         progress: 0,
         status: 'not_started',
         resources: [],
-        exercises: []
+        exercises: [],
+        deadline: topicForm.deadline || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Default: 30 dias a partir de hoje
       };
       setTopics([...topics, newTopic]);
     } else if (modalMode === 'edit' && selectedTopic) {
@@ -130,20 +135,18 @@ const SubjectDetails: React.FC = () => {
 
   const getStatusColor = (status: Topic['status']) => {
     switch (status) {
-      case 'not_started': return 'gray';
-      case 'in_progress': return 'yellow';
       case 'completed': return 'green';
-      case 'review_needed': return 'red';
+      case 'in_progress': return 'blue';
+      case 'not_started': return 'gray';
       default: return 'gray';
     }
   };
 
   const getStatusText = (status: Topic['status']) => {
     switch (status) {
-      case 'not_started': return 'Não iniciado';
-      case 'in_progress': return 'Em andamento';
       case 'completed': return 'Concluído';
-      case 'review_needed': return 'Revisão necessária';
+      case 'in_progress': return 'Em andamento';
+      case 'not_started': return 'Não iniciado';
       default: return 'Desconhecido';
     }
   };
@@ -337,12 +340,6 @@ const SubjectDetails: React.FC = () => {
                                 Pausar
                               </Dropdown.Item>
                             </>
-                          )}
-                          {topic.status === 'completed' && (
-                            <Dropdown.Item onClick={() => handleUpdateTopicStatus(topic.id, 'review_needed')}>
-                              <HiExclamationCircle className="mr-2 h-4 w-4" />
-                              Marcar para Revisão
-                            </Dropdown.Item>
                           )}
                           <Dropdown.Divider />
                           <Dropdown.Item onClick={() => handleDeleteTopic(topic.id)} className="text-red-600">

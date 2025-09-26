@@ -21,10 +21,6 @@ const Solar = lazy(() => import("../views/icons/Solar"));
 // Gabaritte Pages
 const SubjectsPage = lazy(() => import('../views/subjects/SubjectsPage'));
 const SubjectDetails = lazy(() => import('../views/subjects/SubjectDetails'));
-const PlanningPage = lazy(() => import('../views/planning/PlanningPage'));
-const AgilePlanningPage = lazy(() => import('../views/planning/agile/AgilePlanningPage'));
-const CreateStudyCyclePage = lazy(() => import('../views/planning/agile/CreateStudyCyclePage'));
-const ReviewsPage = lazy(() => import('../views/reviews/ReviewsPage'));
 const TrailsPage = lazy(() => import('../views/trails/TrailsPage'));
 const ContentPage = lazy(() => import('../views/content/ContentPage'));
 const SummariesPage = lazy(() => import('../views/summaries/SummariesPage'));
@@ -32,6 +28,8 @@ const SimulationsPage = lazy(() => import('../views/simulations/SimulationsPage'
 const InsightsPage = lazy(() => import('../views/insights/InsightsPage'));
 const HistoryPage = lazy(() => import('../views/history/HistoryPage'));
 const StatisticsPage = lazy(() => import('../views/statistics/StatisticsPage'));
+const CronogramaPage = lazy(() => import('../views/cronograma/CronogramaPage'));
+const CriarCronogramaPage = lazy(() => import('../views/cronograma/CriarCronogramaPageWrapper'));
 const SettingsPage = lazy(() => import('../views/settings/SettingsPage'));
 
 // authentication
@@ -40,7 +38,7 @@ const Register = lazy(() => import('../views/auth/register/Register'));
 const SamplePage = lazy(() => import('../views/sample-page/SamplePage'));
 const Error = lazy(() => import('../views/auth/error/Error'));
 
-const Router = [
+const routerConfig = [
   {
     path: '/',
     element: <FullLayout />,
@@ -50,10 +48,6 @@ const Router = [
       // Gabaritte Routes
       { path: '/subjects', exact: true, element: <SubjectsPage /> },
       { path: '/subjects/:id', exact: true, element: <SubjectDetails /> },
-      { path: '/planning', exact: true, element: <PlanningPage /> },
-      { path: '/planning/agile', exact: true, element: <AgilePlanningPage /> },
-      { path: '/planning/create-cycle', exact: true, element: <CreateStudyCyclePage /> },
-      { path: '/reviews', exact: true, element: <ReviewsPage /> },
       { path: '/trails', exact: true, element: <TrailsPage /> },
       { path: '/content', exact: true, element: <ContentPage /> },
       { path: '/summaries', exact: true, element: <SummariesPage /> },
@@ -61,6 +55,8 @@ const Router = [
       { path: '/insights', exact: true, element: <InsightsPage /> },
       { path: '/history', exact: true, element: <HistoryPage /> },
       { path: '/statistics', exact: true, element: <StatisticsPage /> },
+      { path: '/cronograma', exact: true, element: <CronogramaPage /> },
+      { path: '/cronograma/criar', exact: true, element: <CriarCronogramaPage /> },
       { path: '/settings', exact: true, element: <SettingsPage /> },
       
       // UI Routes
@@ -84,10 +80,9 @@ const Router = [
       { path: '/auth/404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
-  }
-  ,
+  },
 ];
 
-const router = createBrowserRouter(Router)
+const router = createBrowserRouter(routerConfig);
 
 export default router;

@@ -1,0 +1,153 @@
+export interface Step {
+  number: number;
+  title?: string;
+  completed?: boolean;
+}
+
+export interface Course {
+  id: string;
+  name: string;
+  institution: string;
+  selected?: boolean;
+}
+
+export interface Subtopic {
+  id: string;
+  title: string;
+  type: string;
+  selected?: boolean;
+  expanded?: boolean;
+}
+
+export interface Topic {
+  id: string;
+  title: string;
+  subtopics?: Subtopic[];
+  selected?: boolean;
+  expanded?: boolean;
+}
+
+export interface Discipline {
+  id: string;
+  title: string;
+  topics?: Topic[];
+  selected?: boolean;
+  expanded?: boolean;
+}
+
+export interface WeekScheduleDay {
+  day: string;
+  enabled: boolean;
+  startTime: string;
+  endTime: string;
+  totalHours: string;
+}
+
+export interface StudySequenceItem {
+  id: string;
+  order: number;
+  title: string;
+  type: string;
+  duration: string;
+}
+
+export interface ScheduleDataItem {
+  date: string;
+  subjects: Array<{
+    name: string;
+    time: string;
+    duration: string;
+  }>;
+}
+
+export interface ScheduleData extends Array<ScheduleDataItem> {}
+
+export interface DetailedScheduleItem {
+  id: string;
+  time: string;
+  subject: string;
+  content: string;
+  duration: string;
+  status: 'Concluído' | 'Em andamento' | 'Pendente';
+}
+
+export interface DetailedSchedule extends Array<DetailedScheduleItem> {}
+
+export interface SubjectColors {
+  [key: string]: {
+    bg: string;
+    border: string;
+    text: string;
+  };
+}
+
+export interface ScheduleMode {
+  type: string;
+  selectedOption: string;
+}
+
+export interface DisciplineTableData {
+  id: string;
+  name: string;
+  totalContent: number;
+  completionDate: string;
+  studyPlans: string[];
+}
+
+export interface CriarCronogramaPageProps {
+  steps: Step[];
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
+  courses: Course[];
+  disciplines: Discipline[];
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  contentSearchTerm: string;
+  setContentSearchTerm: (term: string) => void;
+  scheduleMode: ScheduleMode;
+  setScheduleMode: (mode: ScheduleMode) => void;
+  scheduleName: string;
+  setScheduleName: (name: string) => void;
+  dailyWorkload: string;
+  setDailyWorkload: (workload: string) => void;
+  timeSuggestions: string[];
+  copyFromDay: string;
+  setCopyFromDay: (day: string) => void;
+  copyToDay: string;
+  setCopyToDay: (day: string) => void;
+  viewMode: string;
+  setViewMode: (mode: string) => void;
+  currentMonth: string;
+  setCurrentMonth: (month: string) => void;
+  currentYear: string;
+  setCurrentYear: (year: string) => void;
+  mockScheduleData: ScheduleData;
+  mockDetailedSchedule: DetailedSchedule;
+  disciplinesTableData: DisciplineTableData[];
+  subjectColors: SubjectColors;
+  studyStartDate: string;
+  setStudyStartDate: (date: string) => void;
+  studyEndDate: string;
+  setStudyEndDate: (date: string) => void;
+  weekSchedule: WeekScheduleDay[];
+  setWeekSchedule: (schedule: WeekScheduleDay[] | ((prev: WeekScheduleDay[]) => WeekScheduleDay[])) => void;
+  studySequence: StudySequenceItem[];
+  setStudySequence: (sequence: StudySequenceItem[] | ((prev: StudySequenceItem[]) => StudySequenceItem[])) => void;
+  toggleCourseSelection: (courseId: string) => void;
+  toggleDisciplineExpansion: (disciplineId: string) => void;
+  toggleDisciplineSelection: (disciplineId: string) => void;
+  toggleTopicExpansion: (disciplineId: string, topicId: string) => void;
+  toggleTopicSelection: (disciplineId: string, topicId: string) => void;
+  toggleSubtopicSelection: (disciplineId: string, topicId: string, subtopicId: string) => void;
+  updateScheduleTime: (index: string, field: string, value: string) => void;
+  getContentIcon: (type: string) => string;
+  getContentInfo: (id: string | any) => any;
+  draggedItem: StudySequenceItem | null;
+  setDraggedItem: (item: StudySequenceItem | null) => void;
+  reviewFrequency?: string;
+  setReviewFrequency?: (frequency: string) => void;
+  reviewDay?: string;
+  setReviewDay?: (day: string) => void;
+  reviewWorkload?: string;
+  setReviewWorkload?: (workload: string) => void;
+}
