@@ -9,23 +9,23 @@ import Header from './header/Header';
 const FullLayout: FC = () => {
   return (
     <>
-      <div className="flex w-full min-h-screen dark:bg-darkgray">
-        <div className="page-wrapper flex w-full  ">
+      <div className="flex w-full min-h-screen dark:bg-darkgray overflow-x-hidden">
+        <div className="page-wrapper flex w-full">
           {/* Header/sidebar */}
           <Sidebar />
-          <div className="page-wrapper-sub flex flex-col w-full dark:bg-darkgray">
+          <div className="page-wrapper-sub flex flex-col w-full dark:bg-darkgray overflow-x-hidden">
             {/* Top Header  */}
             <Header />
 
             <div
-              className={`bg-lightgray dark:bg-dark  h-full rounded-bb`}
+              className={`bg-lightgray dark:bg-dark h-full rounded-bb overflow-x-hidden`}
             >
               {/* Body Content  */}
               <div
-                className={`w-full`}
+                className={`w-full overflow-x-hidden`}
               >
                 <ScrollToTop>
-                  <div className="container py-30">
+                  <div className="container py-30 overflow-x-hidden">
                     <Outlet />
                   </div>
                 </ScrollToTop>

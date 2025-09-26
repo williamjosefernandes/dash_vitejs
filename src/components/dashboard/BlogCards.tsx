@@ -53,56 +53,61 @@ const BlogCardsData = [
 
 const BlogCards = () => {
   return (
-    <>
-      <div className="grid grid-cols-12 gap-30">
-        {BlogCardsData.map((item, i) => (
-          <div className="lg:col-span-4 col-span-12" key={i}>
-            <Link to={item.url} className="group">
-            <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-0 relative w-full break-words overflow-hidden">
-                <div className="relative">
-                  <img src={item.coveravatar} alt="matdash" />
-                  <Badge
-                    color={"muted"}
-                    className="absolute bottom-5 end-5 font-semibold rounded-sm bg-muted"
-                  >
-                    {item.read}
-                  </Badge>
+    <div className="card-container">
+      <div className="card-header">
+        <h5 className="card-title">Latest Blog Posts</h5>
+      </div>
+      <div className="card-content">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full overflow-x-hidden">
+          {BlogCardsData.map((item, index) => (
+            <div key={index} className="group bg-gray-50 dark:bg-gray-800/50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 min-w-0">
+              <div className="aspect-video overflow-hidden bg-gray-200 dark:bg-gray-700">
+                <img
+                  src={item.avatar}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-5">
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {item.category && (
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                      {item.category}
+                    </span>
+                  )}
                 </div>
-
-                <div className="px-6 pb-6">
-                  <img
-                    src={item.avatar}
-                    className="h-10 w-10 rounded-full -mt-7 relative z-1"
-                    alt="user"
-                  />
-                  <Badge color={"muted"} className="mt-6">
-                    {item.category}
-                  </Badge>
-                  <h5 className="text-lg my-6 group-hover:text-primary line-clamp-2">{item.title}</h5>
-                  <div className="flex">
-                    <div className="flex gap-2 me-6 items-center">
-                    <Icon icon="solar:eye-outline" height="18" className="text-dark" />
-                      <span className="text-sm text-darklink">{item.view}</span>
+                <h6 className="text-base font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2 overflow-hidden leading-tight">
+                  {item.title}
+                </h6>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 overflow-hidden">
+                      <img
+                        src={item.avatar}
+                        alt="Author"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <div className="flex gap-2 items-center">
-                    <Icon icon="solar:chat-line-outline" height="18" className="text-dark" />
-                      <span className="text-sm text-darklink">{item.view}</span>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {item.author || 'Author'}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {item.date || '2 days ago'}
+                      </p>
                     </div>
-                    <div className="flex gap-1 items-center ms-auto">
-                      <TbPoint
-                        size={15}
-                        className="text-dark"
-                      />{" "}
-                      <span className="text-sm text-darklink">{item.time}</span>
-                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
+                    <Icon icon="solar:heart-linear" className="w-4 h-4" />
+                    <Icon icon="solar:share-linear" className="w-4 h-4" />
                   </div>
                 </div>
               </div>
-            </Link>
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

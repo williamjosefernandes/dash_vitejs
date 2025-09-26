@@ -8,13 +8,11 @@ const TotalIncome = () => {
   const isPositive = currentIncome > previousIncome;
 
   return (
-    <Card className="h-full">
-      <div className="flex items-center justify-between">
-        <div>
-          <h5 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-            Total Income
-          </h5>
-          <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+    <div className="card-container">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex-1">
+          <h5 className="stat-label">Total Income</h5>
+          <div className="stat-value mb-2">
             ${currentIncome.toLocaleString()}
           </div>
           <div className={`flex items-center text-sm ${
@@ -31,13 +29,13 @@ const TotalIncome = () => {
             <span className="text-gray-500 ml-1">vs last month</span>
           </div>
         </div>
-        <div className="flex-shrink-0">
+        <div className="stat-icon bg-gray-50 dark:bg-gray-800">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            isPositive ? 'bg-green-100' : 'bg-red-100'
+            isPositive ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'
           }`}>
             <svg
               className={`w-6 h-6 ${
-                isPositive ? 'text-green-600' : 'text-red-600'
+                isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
               }`}
               fill="none"
               stroke="currentColor"
@@ -54,23 +52,23 @@ const TotalIncome = () => {
         </div>
       </div>
       
-      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">This Month</p>
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-2 gap-6">
+          <div className="text-center">
+            <p className="stat-label">This Month</p>
             <p className="text-lg font-semibold text-gray-900 dark:text-white">
               ${currentIncome.toLocaleString()}
             </p>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Last Month</p>
+          <div className="text-center">
+            <p className="stat-label">Last Month</p>
             <p className="text-lg font-semibold text-gray-900 dark:text-white">
               ${previousIncome.toLocaleString()}
             </p>
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
