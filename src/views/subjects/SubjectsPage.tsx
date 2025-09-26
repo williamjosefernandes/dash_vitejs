@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Select } from 'flowbite-react';
+import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Select, ToggleSwitch } from 'flowbite-react';
 import { Icon } from '@iconify/react';
-import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiClock, HiAcademicCap, HiTrendingUp, HiSearch } from 'react-icons/hi';
+import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiClock, HiAcademicCap, HiTrendingUp, HiSearch, HiViewGrid, HiViewList } from 'react-icons/hi';
 import { mockSubjects } from '../../data/mockData';
 import { Subject } from '../../data/mockData/studyPlans';
 
@@ -13,6 +13,7 @@ const SubjectsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'not_started' | 'in_progress' | 'completed'>('all');
   const [filterDifficulty, setFilterDifficulty] = useState<'all' | 'beginner' | 'intermediate' | 'advanced'>('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Formulário
   const [formData, setFormData] = useState<{
@@ -155,6 +156,174 @@ const SubjectsPage: React.FC = () => {
     }
   };
 
+  // Componente para visualização em Grid
+  const GridView = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {filteredSubjects.map((subject) => (
+        <Card key={subject.id} className="hover:shadow-lg transition-all duration-200 hover:scale-105">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex items-center">
+              <div className={`p-2 rounded-lg bg-${subject.color}-100 dark:bg-${subject.color}-900`}>
+                <Icon icon={subject.icon} className={`h-6 w-6 text-${subject.color}-600 dark:text-${subject.color}-400`} />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1">
+                  {subject.name}
+                </h3>
+                {subject.code && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{subject.code}</p>
+                )}
+              </div>
+            </div>
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={<HiDotsVertical className="h-5 w-5 text-gray-500" />}
+            >
+              <Dropdown.Item onClick={() => handleOpenModal('view', subject)}>
+                <HiEye className="mr-2 h-4 w-4" />
+                Visualizar
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleOpenModal('edit', subject)}>
+                <HiPencil className="mr-2 h-4 w-4" />
+                Editar
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={() => handleDelete(subject.id)} className="text-red-600">
+                <HiTrash className="mr-2 h-4 w-4" />
+                Excluir
+              </Dropdown.Item>
+            </Dropdown>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <Badge color={getStatusColor(subject.progress)}>
+                {getStatusText(subject.progress)}
+              </Badge>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {subject.progress}%
+              </span>
+            </div>
+
+            <Progress progress={subject.progress} color={subject.color} />
+
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>{subject.completedHours}h / {subject.totalHours}h</span>
+              <span>{subject.topics.length} tópicos</span>
+            </div>
+
+            <div className="flex gap-2 flex-wrap">
+              <Badge color={getDifficultyColor(subject.difficulty)} size="sm">
+                {subject.difficulty === 'beginner' ? 'Iniciante' : 
+                 subject.difficulty === 'intermediate' ? 'Intermediário' : 'Avançado'}
+              </Badge>
+              <Badge color={getPriorityColor(subject.priority)} size="sm">
+                {subject.priority === 'low' ? 'Baixa' : 
+                 subject.priority === 'medium' ? 'Média' : 'Alta'}
+              </Badge>
+            </div>
+
+            {subject.description && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                {subject.description}
+              </p>
+            )}
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+
+  // Componente para visualização em Lista
+  const ListView = () => (
+    <div className="space-y-4">
+      {filteredSubjects.map((subject) => (
+        <Card key={subject.id} className="hover:shadow-md transition-shadow duration-200">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+            {/* Informações principais */}
+            <div className="flex items-center flex-1 min-w-0">
+              <div className={`p-3 rounded-lg bg-${subject.color}-100 dark:bg-${subject.color}-900 flex-shrink-0`}>
+                <Icon icon={subject.icon} className={`h-8 w-8 text-${subject.color}-600 dark:text-${subject.color}-400`} />
+              </div>
+              <div className="ml-4 flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
+                    {subject.name}
+                  </h3>
+                  {subject.code && (
+                    <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                      {subject.code}
+                    </span>
+                  )}
+                </div>
+                {subject.description && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {subject.description}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Progresso e estatísticas */}
+            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-end xl:items-center gap-4 lg:min-w-0 xl:min-w-max">
+              <div className="flex flex-col items-start sm:items-center lg:items-end xl:items-center">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge color={getStatusColor(subject.progress)}>
+                    {getStatusText(subject.progress)}
+                  </Badge>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    {subject.progress}%
+                  </span>
+                </div>
+                <div className="w-32 mb-2">
+                  <Progress progress={subject.progress} color={subject.color} size="sm" />
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                  {subject.completedHours}h / {subject.totalHours}h • {subject.topics.length} tópicos
+                </div>
+              </div>
+
+              {/* Badges e ações */}
+              <div className="flex flex-col items-start sm:items-end gap-2">
+                <div className="flex gap-2 flex-wrap">
+                  <Badge color={getDifficultyColor(subject.difficulty)} size="sm">
+                    {subject.difficulty === 'beginner' ? 'Iniciante' : 
+                     subject.difficulty === 'intermediate' ? 'Intermediário' : 'Avançado'}
+                  </Badge>
+                  <Badge color={getPriorityColor(subject.priority)} size="sm">
+                    {subject.priority === 'low' ? 'Baixa' : 
+                     subject.priority === 'medium' ? 'Média' : 'Alta'}
+                  </Badge>
+                </div>
+                
+                <Dropdown
+                  arrowIcon={false}
+                  inline
+                  label={<HiDotsVertical className="h-5 w-5 text-gray-500" />}
+                >
+                  <Dropdown.Item onClick={() => handleOpenModal('view', subject)}>
+                    <HiEye className="mr-2 h-4 w-4" />
+                    Visualizar
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleOpenModal('edit', subject)}>
+                    <HiPencil className="mr-2 h-4 w-4" />
+                    Editar
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => handleDelete(subject.id)} className="text-red-600">
+                    <HiTrash className="mr-2 h-4 w-4" />
+                    Excluir
+                  </Dropdown.Item>
+                </Dropdown>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -172,59 +341,59 @@ const SubjectsPage: React.FC = () => {
       </div>
 
       {/* Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
-              <HiAcademicCap className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+            <div className="p-2 sm:p-3 rounded-full bg-blue-100 dark:bg-blue-900">
+              <HiAcademicCap className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 dark:text-blue-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
+            <div className="ml-3 sm:ml-4 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
             </div>
           </div>
         </Card>
 
-        <Card>
+        <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-100 dark:bg-green-900">
-              <HiTrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+            <div className="p-2 sm:p-3 rounded-full bg-green-100 dark:bg-green-900">
+              <HiTrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 dark:text-green-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Concluídas</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.completed}</p>
+            <div className="ml-3 sm:ml-4 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Concluídas</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.completed}</p>
             </div>
           </div>
         </Card>
 
-        <Card>
+        <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900">
-              <HiClock className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+            <div className="p-2 sm:p-3 rounded-full bg-yellow-100 dark:bg-yellow-900">
+              <HiClock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600 dark:text-yellow-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Em Andamento</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.inProgress}</p>
+            <div className="ml-3 sm:ml-4 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Em Andamento</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.inProgress}</p>
             </div>
           </div>
         </Card>
 
-        <Card>
+        <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900">
-              <HiClock className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+            <div className="p-2 sm:p-3 rounded-full bg-purple-100 dark:bg-purple-900">
+              <HiClock className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600 dark:text-purple-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Horas Totais</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalHours}h</p>
+            <div className="ml-3 sm:ml-4 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Horas Totais</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.totalHours}h</p>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Filtros */}
+      {/* Filtros e Controles de Visualização */}
       <Card>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
           <div className="flex-1">
             <TextInput
               placeholder="Buscar disciplinas..."
@@ -233,97 +402,36 @@ const SubjectsPage: React.FC = () => {
               icon={HiSearch}
             />
           </div>
-          <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as any)}>
-            <option value="all">Todos os status</option>
-            <option value="not_started">Não iniciado</option>
-            <option value="in_progress">Em andamento</option>
-            <option value="completed">Concluído</option>
-          </Select>
-          <Select value={filterDifficulty} onChange={(e) => setFilterDifficulty(e.target.value as any)}>
-            <option value="all">Todas as dificuldades</option>
-            <option value="beginner">Iniciante</option>
-            <option value="intermediate">Intermediário</option>
-            <option value="advanced">Avançado</option>
-          </Select>
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+            <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as any)}>
+              <option value="all">Todos os status</option>
+              <option value="not_started">Não iniciado</option>
+              <option value="in_progress">Em andamento</option>
+              <option value="completed">Concluído</option>
+            </Select>
+            <Select value={filterDifficulty} onChange={(e) => setFilterDifficulty(e.target.value as any)}>
+              <option value="all">Todas as dificuldades</option>
+              <option value="beginner">Iniciante</option>
+              <option value="intermediate">Intermediário</option>
+              <option value="advanced">Avançado</option>
+            </Select>
+            
+            {/* Toggle de Visualização */}
+            <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
+              <HiViewGrid className={`h-5 w-5 ${viewMode === 'grid' ? 'text-primary' : 'text-gray-400'}`} />
+              <ToggleSwitch
+                checked={viewMode === 'list'}
+                onChange={(checked) => setViewMode(checked ? 'list' : 'grid')}
+                className="focus:ring-primary"
+              />
+              <HiViewList className={`h-5 w-5 ${viewMode === 'list' ? 'text-primary' : 'text-gray-400'}`} />
+            </div>
+          </div>
         </div>
       </Card>
 
       {/* Lista de Disciplinas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredSubjects.map((subject) => (
-          <Card key={subject.id} className="hover:shadow-lg transition-shadow">
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center">
-                <div className={`p-2 rounded-lg bg-${subject.color}-100 dark:bg-${subject.color}-900`}>
-                  <Icon icon={subject.icon} className={`h-6 w-6 text-${subject.color}-600 dark:text-${subject.color}-400`} />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {subject.name}
-                  </h3>
-                  {subject.code && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{subject.code}</p>
-                  )}
-                </div>
-              </div>
-              <Dropdown
-                arrowIcon={false}
-                inline
-                label={<HiDotsVertical className="h-5 w-5 text-gray-500" />}
-              >
-                <Dropdown.Item onClick={() => handleOpenModal('view', subject)}>
-                  <HiEye className="mr-2 h-4 w-4" />
-                  Visualizar
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => handleOpenModal('edit', subject)}>
-                  <HiPencil className="mr-2 h-4 w-4" />
-                  Editar
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={() => handleDelete(subject.id)} className="text-red-600">
-                  <HiTrash className="mr-2 h-4 w-4" />
-                  Excluir
-                </Dropdown.Item>
-              </Dropdown>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <Badge color={getStatusColor(subject.progress)}>
-                  {getStatusText(subject.progress)}
-                </Badge>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {subject.progress}%
-                </span>
-              </div>
-
-              <Progress progress={subject.progress} color={subject.color} />
-
-              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                <span>{subject.completedHours}h / {subject.totalHours}h</span>
-                <span>{subject.topics.length} tópicos</span>
-              </div>
-
-              <div className="flex gap-2">
-                <Badge color={getDifficultyColor(subject.difficulty)} size="sm">
-                  {subject.difficulty === 'beginner' ? 'Iniciante' : 
-                   subject.difficulty === 'intermediate' ? 'Intermediário' : 'Avançado'}
-                </Badge>
-                <Badge color={getPriorityColor(subject.priority)} size="sm">
-                  {subject.priority === 'low' ? 'Baixa' : 
-                   subject.priority === 'medium' ? 'Média' : 'Alta'}
-                </Badge>
-              </div>
-
-              {subject.description && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {subject.description}
-                </p>
-              )}
-            </div>
-          </Card>
-        ))}
-      </div>
+      {viewMode === 'grid' ? <GridView /> : <ListView />}
 
       {filteredSubjects.length === 0 && (
         <Card>
