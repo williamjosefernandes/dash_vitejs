@@ -40,6 +40,13 @@ const SidebarContent: MenuItem[] = [
     heading: "GABARITTE",
     children: [
       {
+        name: "Planos",
+        icon: "solar:book-bold-duotone",
+        id: uniqueId(),
+        url: "/study-plans",
+        isPro: false,
+      },
+      {
         name: "Disciplinas",
         icon: "solar:book-bold-duotone",
         id: uniqueId(),

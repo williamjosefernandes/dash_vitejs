@@ -81,15 +81,25 @@ const InfluencerProfile: React.FC = () => {
               <Icon icon="solar:map-point-bold-duotone" className="w-4 h-4 text-gray-400" />
               {influencerData.location}
             </div>
-            <div className="flex items-center gap-2">
-              <Icon icon="solar:global-bold-duotone" className="w-4 h-4 text-gray-400" />
-              <a href={`https://${influencerData.website}`} className="hover:text-primary transition-colors">
+            <div className="flex items-center gap-2 min-w-0">
+              <Icon icon="solar:global-bold-duotone" className="w-4 h-4 text-gray-400 flex-shrink-0" />
+              <a 
+                href={`https://${influencerData.website}`} 
+                className="hover:text-primary transition-colors duration-200 truncate max-w-xs"
+                title={influencerData.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {influencerData.website}
               </a>
             </div>
-            <div className="flex items-center gap-2">
-              <Icon icon="solar:letter-bold-duotone" className="w-4 h-4 text-gray-400" />
-              <a href={`mailto:${influencerData.email}`} className="hover:text-primary transition-colors">
+            <div className="flex items-center gap-2 min-w-0">
+              <Icon icon="solar:letter-bold-duotone" className="w-4 h-4 text-gray-400 flex-shrink-0" />
+              <a 
+                href={`mailto:${influencerData.email}`} 
+                className="hover:text-primary transition-colors duration-200 truncate max-w-xs"
+                title={influencerData.email}
+              >
                 {influencerData.email}
               </a>
             </div>

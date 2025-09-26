@@ -206,10 +206,11 @@ const RedesSociaisTab: React.FC = () => {
                   href={network.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
+                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium transition-colors duration-200 whitespace-nowrap min-w-0 flex-shrink-0"
+                  title={`Visitar perfil ${network.platform}`}
                 >
-                  Visitar
-                  <HiExternalLink className="w-4 h-4" />
+                  <span className="truncate">Visitar Perfil</span>
+                  <HiExternalLink className="w-4 h-4 flex-shrink-0" />
                 </a>
               </div>
 
