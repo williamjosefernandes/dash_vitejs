@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { HiStar, HiCalendar, HiThumbUp, HiThumbDown, HiChat, HiTrendingUp, HiCheckCircle } from 'react-icons/hi';
+import { HiStar, HiCalendar, HiThumbUp, HiCheckCircle } from 'react-icons/hi';
 
 interface Review {
   id: string;

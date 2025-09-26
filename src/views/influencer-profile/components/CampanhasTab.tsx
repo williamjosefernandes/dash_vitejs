@@ -32,7 +32,7 @@ interface Campaign {
 
 const CampanhasTab: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
+  const [, setSelectedCampaign] = useState<Campaign | null>(null);
 
   const campaigns: Campaign[] = [
     {

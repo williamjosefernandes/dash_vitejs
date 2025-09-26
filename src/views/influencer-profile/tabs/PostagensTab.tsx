@@ -5,8 +5,7 @@ import {
   Badge, 
   Modal, 
   Select, 
-  TextInput,
-  Dropdown
+  TextInput
 } from 'flowbite-react';
 import { 
   HiHeart, 
@@ -15,7 +14,6 @@ import {
   HiShare, 
   HiPlay, 
   HiSearch,
-  HiFilter,
   HiExternalLink,
   HiClipboardCopy,
   HiTrendingUp,

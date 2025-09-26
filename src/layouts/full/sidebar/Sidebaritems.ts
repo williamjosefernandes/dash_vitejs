@@ -25,164 +25,163 @@ import { uniqueId } from "lodash";
 
 const SidebarContent: MenuItem[] = [
   {
+    heading: "HOME",
     children: [
       {
-        id: uniqueId(),
         name: "Dashboard",
-        icon: "solar:home-2-bold-duotone",
-        url: "/gabaritte/home",
-        color: "text-blue-600"
-      },
-      {
+        icon: "solar:widget-add-line-duotone",
         id: uniqueId(),
-        name: "Planos de Estudo",
-        icon: "solar:book-bookmark-bold-duotone",
-        url: "/gabaritte/planos-estudo",
-        color: "text-green-600"
+        url: "/",
+        isPro: false,
       },
+    ],
+  },
+  {
+    heading: "GABARITTE",
+    children: [
       {
-        id: uniqueId(),
         name: "Disciplinas",
-        icon: "solar:book-2-bold-duotone",
-        url: "/gabaritte/disciplinas",
-        color: "text-purple-600"
+        icon: "solar:book-bold-duotone",
+        id: uniqueId(),
+        url: "/subjects",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Planejamento",
         icon: "solar:calendar-bold-duotone",
-        url: "/gabaritte/planejamento",
-        color: "text-orange-600"
+        id: uniqueId(),
+        url: "/planning/agile",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Revisões",
         icon: "solar:refresh-bold-duotone",
-        url: "/gabaritte/revisoes",
-        color: "text-cyan-600"
+        id: uniqueId(),
+        url: "/reviews",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Trilhas",
-        icon: "solar:map-point-bold-duotone",
-        url: "/gabaritte/trilhas",
-        color: "text-indigo-600"
+        icon: "solar:map-bold-duotone",
+        id: uniqueId(),
+        url: "/trails",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Conteúdo",
-        icon: "solar:document-text-bold-duotone",
-        url: "/gabaritte/conteudo",
-        color: "text-pink-600"
+        icon: "solar:library-bold-duotone",
+        id: uniqueId(),
+        url: "/content",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Resumos",
-        icon: "solar:notes-bold-duotone",
-        url: "/gabaritte/resumos",
-        color: "text-yellow-600"
+        icon: "solar:document-text-bold-duotone",
+        id: uniqueId(),
+        url: "/summaries",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Simulados",
-        icon: "solar:clipboard-check-bold-duotone",
-        url: "/gabaritte/simulados",
-        color: "text-red-600"
+        icon: "solar:test-tube-bold-duotone",
+        id: uniqueId(),
+        url: "/simulations",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Insights",
         icon: "solar:chart-bold-duotone",
-        url: "/gabaritte/insights",
-        color: "text-emerald-600"
+        id: uniqueId(),
+        url: "/insights",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Histórico",
         icon: "solar:history-bold-duotone",
-        url: "/gabaritte/historico",
-        color: "text-gray-600"
+        id: uniqueId(),
+        url: "/history",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Estatísticas",
         icon: "solar:graph-bold-duotone",
-        url: "/gabaritte/estatisticas",
-        color: "text-blue-600"
+        id: uniqueId(),
+        url: "/statistics",
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Configurações",
         icon: "solar:settings-bold-duotone",
-        url: "/gabaritte/configuracoes",
-        color: "text-slate-600"
-      }
-    ]
+        id: uniqueId(),
+        url: "/settings",
+        isPro: false,
+      },
+    ],
   },
   {
-    heading: "UI Components",
+    heading: "UI COMPONENTS",
     children: [
       {
-        id: uniqueId(),
         name: "Typography",
         icon: "solar:text-bold-duotone",
+        id: uniqueId(),
         url: "/ui/typography",
-        color: "text-gray-600"
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Table",
         icon: "solar:table-bold-duotone",
+        id: uniqueId(),
         url: "/ui/table",
-        color: "text-gray-600"
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Form",
-        icon: "solar:document-add-bold-duotone",
+        icon: "solar:form-bold-duotone",
+        id: uniqueId(),
         url: "/ui/form",
-        color: "text-gray-600"
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Alert",
-        icon: "solar:bell-bing-bold-duotone",
+        icon: "solar:bell-bold-duotone",
+        id: uniqueId(),
         url: "/ui/alert",
-        color: "text-gray-600"
+        isPro: false,
       },
       {
-        id: uniqueId(),
         name: "Shadow",
-        icon: "solar:square-bold-duotone",
+        icon: "solar:layers-bold-duotone",
+        id: uniqueId(),
         url: "/ui/shadow",
-        color: "text-gray-600"
-      }
-    ]
+        isPro: false,
+      },
+    ],
   },
   {
-    heading: "Icons",
+    heading: "ICONS",
     children: [
       {
-        id: uniqueId(),
         name: "Solar Icons",
         icon: "solar:star-bold-duotone",
+        id: uniqueId(),
         url: "/icons/solar",
-        color: "text-yellow-600"
-      }
-    ]
+        isPro: false,
+      },
+    ],
   },
   {
-    heading: "Sample",
+    heading: "EXTRAS",
     children: [
       {
-        id: uniqueId(),
         name: "Sample Page",
-        icon: "solar:file-bold-duotone",
+        icon: "solar:page-bold-duotone",
+        id: uniqueId(),
         url: "/sample-page",
-        color: "text-gray-600"
-      }
-    ]
-  }
+        isPro: false,
+      },
+    ],
+  },
 ];
 
 export default SidebarContent;

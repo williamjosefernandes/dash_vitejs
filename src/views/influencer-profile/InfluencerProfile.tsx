@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Tabs, Avatar, Badge, Button } from 'flowbite-react';
+import { Button } from 'flowbite-react';
 import { 
   HiUser, 
-  HiPhotograph, 
-  HiGlobe, 
   HiBriefcase, 
   HiStar,
   HiLocationMarker,
   HiCalendar,
-  HiUsers,
   HiHeart,
   HiChat,
   HiShare,
   HiPlay,
-  HiEye,
-  HiPlus,
   HiDotsHorizontal,
   HiX,
   HiChevronUp,
@@ -23,13 +18,11 @@ import {
   HiVolumeOff
 } from 'react-icons/hi';
 import { Icon } from '@iconify/react';
-import CardBox from 'src/components/shared/CardBox';
-import PostagensTab from './tabs/PostagensTab';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import LazyImage from 'src/components/shared/LazyImage';
-import RedesSociaisTab from './tabs/RedesSociaisTab';
-import CampanhasTab from './tabs/CampanhasTab';
-import AvaliacoesTab from './tabs/AvaliacoesTab';
+import RedesSociaisTab from './components/RedesSociaisTab';
+import CampanhasTab from './components/CampanhasTab';
+import AvaliacoesTab from './components/AvaliacoesTab';
 
 // Mock data para o perfil do influenciador
 const influencerData = {
@@ -156,21 +149,38 @@ const InfluencerProfile: React.FC = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     const currentLength = displayedPosts.length;
-    const newPosts = Array.from({ length: 6 }, (_, i) => ({
-      id: currentLength + i + 1,
-      type: Math.random() > 0.5 ? 'photo' : 'video',
-      thumbnail: `https://images.unsplash.com/photo-${1515886657613 + i}?w=300&h=300&fit=crop`,
-      likes: Math.floor(Math.random() * 50000) + 1000,
-      comments: Math.floor(Math.random() * 1000) + 50,
-      isVideo: Math.random() > 0.7,
-      duration: Math.random() > 0.5 ? `${Math.floor(Math.random() * 2)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}` : undefined,
-      isCarousel: Math.random() > 0.8
-    }));
+    const newPosts = Array.from({ length: 6 }, (_, i) => {
+      const isVideo = Math.random() > 0.7;
+      const isCarousel = Math.random() > 0.8;
+      
+      const basePost = {
+        id: currentLength + i + 1,
+        type: Math.random() > 0.5 ? 'photo' : 'video',
+        thumbnail: `https://images.unsplash.com/photo-${1515886657613 + i}?w=300&h=300&fit=crop`,
+        likes: Math.floor(Math.random() * 50000) + 1000,
+        comments: Math.floor(Math.random() * 1000) + 50,
+        isVideo
+      };
+      
+      if (isVideo) {
+        return {
+          ...basePost,
+          duration: `${Math.floor(Math.random() * 2)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`
+        };
+      } else if (isCarousel) {
+        return {
+          ...basePost,
+          isCarousel: true
+        };
+      }
+      
+      return basePost;
+    });
     
     setDisplayedPosts(prev => [...prev, ...newPosts]);
     
     // Simula fim dos dados após 30 posts
-    if (displayedPosts.length >= 30) {
+    if (displayedPosts.length + newPosts.length >= 30) {
       setHasMorePosts(false);
     }
   };
@@ -192,7 +202,7 @@ const InfluencerProfile: React.FC = () => {
     
     setDisplayedVideos(prev => [...prev, ...newVideos]);
     
-    if (displayedVideos.length >= 15) {
+    if (displayedVideos.length + newVideos.length >= 15) {
       setHasMoreVideos(false);
     }
   };
@@ -205,10 +215,7 @@ const InfluencerProfile: React.FC = () => {
   } = useInfiniteScroll(loadMorePosts);
 
   const {
-    isLoading: isLoadingVideos,
-    hasMore: hasMoreVideos,
-    setHasMore: setHasMoreVideos,
-    observerRef: videosObserverRef
+    setHasMore: setHasMoreVideos
   } = useInfiniteScroll(loadMoreVideos);
 
   // Dados para vídeos estilo TikTok
@@ -366,7 +373,7 @@ const InfluencerProfile: React.FC = () => {
                 <img
                   src={influencerData.avatar}
                   alt={influencerData.name}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover"
                 />
               </div>
               {influencerData.verified && (
@@ -459,7 +466,7 @@ const InfluencerProfile: React.FC = () => {
                 <img
                   src={story.thumbnail}
                   alt={story.title}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div className="text-xs font-medium text-gray-700 dark:text-gray-300 max-w-[64px] sm:max-w-[80px] truncate group-hover:text-[#635bFF] transition-colors">
@@ -576,7 +583,7 @@ const InfluencerProfile: React.FC = () => {
                   <LazyImage
                     src={post.thumbnail}
                     alt={`Post ${post.id}`}
-                    className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   
                   {/* Overlay com estatísticas - Responsivo */}
@@ -661,7 +668,7 @@ const InfluencerProfile: React.FC = () => {
               <img
                 src={currentVideo.thumbnail}
                 alt={currentVideo.title}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover"
               />
               
               {/* Controles de Navegação */}

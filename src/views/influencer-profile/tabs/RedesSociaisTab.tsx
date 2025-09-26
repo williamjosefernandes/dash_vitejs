@@ -9,7 +9,6 @@ import {
   Progress
 } from 'flowbite-react';
 import { 
-  HiUsers, 
   HiHeart, 
   HiChat, 
   HiEye, 

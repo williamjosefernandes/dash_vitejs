@@ -6,8 +6,7 @@ import {
   Modal, 
   Select, 
   TextInput,
-  Avatar,
-  Progress
+  Avatar
 } from 'flowbite-react';
 import { 
   HiHeart, 
@@ -17,8 +16,6 @@ import {
   HiSearch,
   HiCalendar,
   HiTrendingUp,
-  HiLocationMarker,
-  HiDocumentText,
   HiStar,
   HiExternalLink,
   HiClipboardList
@@ -176,7 +173,7 @@ const campanhasData = [
 ];
 
 const CampanhasTab: React.FC = () => {
-  const [campanhas, setCampanhas] = useState(campanhasData);
+  const [campanhas] = useState(campanhasData);
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -369,7 +366,7 @@ const CampanhasTab: React.FC = () => {
 
             {/* Objetivo */}
             <div className="flex items-center gap-2 mb-4">
-              <HiLocationMarker className="w-4 h-4 text-blue-500" />
+              <HiStar className="w-4 h-4 text-blue-500" />
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {campanha.objective}
               </span>
@@ -536,7 +533,7 @@ const CampanhasTab: React.FC = () => {
                         <img
                           src={post.thumbnail}
                           alt={`Post ${index + 1}`}
-                          className="w-full h-32 object-cover object-top rounded-lg"
+                          className="w-full h-32 object-cover rounded-lg"
                         />
                         <div className="absolute top-2 right-2">
                           {getPlatformIcon(post.platform)}
