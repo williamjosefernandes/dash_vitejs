@@ -57,9 +57,9 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
                 {cronograma.description}
               </p>
               <div className="flex items-center gap-4 text-sm text-gray-500">
-                <span>Status: {cronograma.status}</span>
-                <span>Progresso: {cronograma.progress}%</span>
-                <span>{cronograma.subjects.length} matérias</span>
+                <output>Status: {cronograma.status}</output>
+            <output>Progresso: {cronograma.progress}%</output>
+            <output>{cronograma.subjects.length} matérias</output>
               </div>
             </div>
           </div>

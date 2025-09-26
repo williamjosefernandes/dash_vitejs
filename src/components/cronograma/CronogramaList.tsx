@@ -178,8 +178,8 @@ export const CronogramaList: React.FC<CronogramaListProps> = ({
                 {/* Progress Bar */}
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-700">Progresso</span>
-                    <span className="text-sm text-gray-600">{cronograma.progress}%</span>
+                    <label className="text-sm font-medium text-gray-700">Progresso</label>
+            <output className="text-sm text-gray-600">{cronograma.progress}%</output>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
@@ -193,18 +193,18 @@ export const CronogramaList: React.FC<CronogramaListProps> = ({
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Clock size={16} />
-                    <span>{cronograma.completedHours}h / {cronograma.totalHours}h</span>
+                    <output>{cronograma.completedHours}h / {cronograma.totalHours}h</output>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <BookOpen size={16} />
-                    <span>{cronograma.subjects.length} matérias</span>
+                    <output>{cronograma.subjects.length} matérias</output>
                   </div>
                 </div>
 
                 {/* Dates */}
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
                   <Calendar size={16} />
-                  <span>{formatDate(cronograma.startDate)} - {formatDate(cronograma.endDate)}</span>
+                  <time>{formatDate(cronograma.startDate)} - {formatDate(cronograma.endDate)}</time>
                 </div>
 
                 {/* Subjects Tags */}

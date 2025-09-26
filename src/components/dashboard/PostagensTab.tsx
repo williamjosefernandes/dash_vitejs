@@ -349,19 +349,19 @@ const PostagensTab: React.FC = () => {
                     <div className="text-sm font-semibold text-secondary">
                       {formatNumber(post.metricas.curtidas)}
                     </div>
-                    <div className="text-xs text-gray-500">Curtidas</div>
+                    <small className="text-xs text-gray-500">Curtidas</small>
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-info">
                       {formatNumber(post.metricas.comentarios)}
                     </div>
-                    <div className="text-xs text-gray-500">Comentários</div>
+                    <small className="text-xs text-gray-500">Comentários</small>
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-success">
                       {post.metricas.engajamento.toFixed(1)}%
                     </div>
-                    <div className="text-xs text-gray-500">Engajamento</div>
+                    <small className="text-xs text-gray-500">Engajamento</small>
                   </div>
                 </div>
               )}
@@ -373,10 +373,10 @@ const PostagensTab: React.FC = () => {
       {/* Modal de Detalhes */}
       <Modal show={selectedPost !== null} onClose={() => setSelectedPost(null)} size="4xl">
         <Modal.Header>
-          <div className="flex items-center gap-3">
-            <Icon icon={getTipoIcon(selectedPost?.tipo || '')} className="w-6 h-6 text-primary" />
-            <span>{selectedPost?.titulo}</span>
-          </div>
+            <h2 className="flex items-center gap-3">
+              <Icon icon={getTipoIcon(selectedPost?.tipo || '')} className="w-6 h-6 text-primary" />
+              <strong>{selectedPost?.titulo}</strong>
+            </h2>
         </Modal.Header>
         <Modal.Body>
           {selectedPost && (
@@ -399,7 +399,7 @@ const PostagensTab: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <Icon icon={getPlataformaIcon(selectedPost.plataforma)} className="w-5 h-5 text-gray-600" />
-                      <span className="text-gray-700 dark:text-gray-300">{selectedPost.plataforma}</span>
+                      <strong className="text-gray-700 dark:text-gray-300">{selectedPost.plataforma}</strong>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon icon="solar:calendar-bold-duotone" className="w-5 h-5 text-gray-600" />
@@ -426,25 +426,25 @@ const PostagensTab: React.FC = () => {
                         <div className="text-lg font-bold text-secondary">
                           {formatNumber(selectedPost.metricas.curtidas)}
                         </div>
-                        <div className="text-sm text-gray-600">Curtidas</div>
+                        <small className="text-sm text-gray-600">Curtidas</small>
                       </div>
                       <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
                         <div className="text-lg font-bold text-info">
                           {formatNumber(selectedPost.metricas.comentarios)}
                         </div>
-                        <div className="text-sm text-gray-600">Comentários</div>
+                        <small className="text-sm text-gray-600">Comentários</small>
                       </div>
                       <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
                         <div className="text-lg font-bold text-warning">
                           {formatNumber(selectedPost.metricas.compartilhamentos)}
                         </div>
-                        <div className="text-sm text-gray-600">Compartilhamentos</div>
+                        <small className="text-sm text-gray-600">Compartilhamentos</small>
                       </div>
                       <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
                         <div className="text-lg font-bold text-success">
                           {selectedPost.metricas.engajamento.toFixed(1)}%
                         </div>
-                        <div className="text-sm text-gray-600">Engajamento</div>
+                        <small className="text-sm text-gray-600">Engajamento</small>
                       </div>
                     </div>
                   </div>
