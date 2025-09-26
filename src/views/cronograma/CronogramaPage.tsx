@@ -1,10 +1,63 @@
-import React, { useMemo } from 'react';
-import { Card } from 'flowbite-react';
+import React, { useMemo, useState } from 'react';
+import { Button } from 'flowbite-react';
 import { Icon } from '@iconify/react';
-import { HiClock, HiPlay, HiPause, HiStop, HiTrendingUp } from 'react-icons/hi';
+import { HiClock, HiPlay, HiPause, HiStop, HiTrendingUp, HiViewGrid, HiViewList, HiPlus, HiDocumentAdd, HiCalendar } from 'react-icons/hi';
 import StudyTimerList from '../../components/cronograma/StudyTimerList';
 
 const CronogramaPage: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  
+  // Função para lidar com a adição de novo conteúdo
+  const handleAddContent = () => {
+    // Aqui você pode implementar a lógica para adicionar novo conteúdo
+    console.log('Adicionar novo conteúdo');
+  };
+
+  // Função para lidar com a seleção de data
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    setShowCalendar(false);
+    console.log('Data selecionada:', date.toLocaleDateString('pt-BR'));
+  };
+
+  // Função para alternar a visibilidade do calendário
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+  };
+
+  // Função para gerar os dias do mês
+  const generateCalendarDays = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+    
+    const days = [];
+    const currentDate = new Date(startDate);
+    
+    for (let i = 0; i < 42; i++) {
+      days.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    return days;
+  };
+
+  // Função para navegar entre meses
+  const navigateMonth = (direction: 'prev' | 'next') => {
+    const newDate = new Date(selectedDate);
+    if (direction === 'prev') {
+      newDate.setMonth(newDate.getMonth() - 1);
+    } else {
+      newDate.setMonth(newDate.getMonth() + 1);
+    }
+    setSelectedDate(newDate);
+  };
+  
   // Estatísticas mockadas - você pode substituir por dados reais
   const stats = useMemo(() => {
     const totalSessions = 45;
@@ -24,8 +77,8 @@ const CronogramaPage: React.FC = () => {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <Icon 
-                    icon="solar:clock-circle-bold-duotone" 
+                  <Icon
+                    icon="solar:book-bold-duotone"
                     className="w-6 h-6 text-blue-600 dark:text-blue-400"
                   />
                 </div>
@@ -36,6 +89,45 @@ const CronogramaPage: React.FC = () => {
               <p className="text-base text-gray-600 dark:text-gray-400 max-w-2xl">
                 Organize seus estudos por conteúdo e acompanhe seu progresso
               </p>
+            </div>
+
+            <div className="flex items-center gap-3 w-full lg:w-auto">
+              {/* Toggle de visualização */}
+              <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 border border-gray-200 dark:border-gray-600">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-2.5 rounded-md transition-all duration-200 ${
+                    viewMode === 'grid'
+                      ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm border border-gray-200 dark:border-gray-500'
+                      : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
+                  }`}
+                  title="Visualização em grade"
+                >
+                  <HiViewGrid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2.5 rounded-md transition-all duration-200 ${
+                    viewMode === 'list'
+                      ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm border border-gray-200 dark:border-gray-500'
+                      : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
+                  }`}
+                  title="Visualização em lista"
+                >
+                  <HiViewList className="w-4 h-4" />
+                </button>
+              </div>
+
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-200"
+              >
+                <HiPlus className="w-4 h-4 mr-2" />
+                Novo Cronograma
+              </Button>
+
+
+
+
             </div>
           </div>
         </div>
@@ -87,6 +179,18 @@ const CronogramaPage: React.FC = () => {
 
         {/* Conteúdo Principal */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          {/* Header do conteúdo com botão adicional */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                Conteúdos de Estudo
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Gerencie seus tópicos e cronômetros de estudo
+              </p>
+            </div>
+          </div>
+          
           <StudyTimerList />
         </div>
       </div>
