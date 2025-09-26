@@ -31,7 +31,6 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
   setCurrentYear,
   mockScheduleData,
   mockDetailedSchedule,
-  disciplinesTableData,
   subjectColors,
   studyStartDate,
   setStudyStartDate,
@@ -1207,12 +1206,10 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
                                     <div 
                                       key={subIndex}
                                       className={`text-xs px-2 py-1 rounded-md border ${colors.bg} ${colors.text} ${colors.border} cursor-pointer hover:shadow-sm transition-all group`}
-                                      title={`${subject.name} - ${subject.content} (${subject.contentType}) - ${subject.time}`}
+                                      title={`${subject.name} - ${subject.time} (${subject.type})`}
                                     >
                                       <div className="font-medium truncate">{subject.name}</div>
-                                      <div className="text-xs opacity-75 mt-0.5 truncate">
-                                        {subject.content} ({subject.contentType})
-                                      </div>
+                                      <div className="text-xs opacity-75 mt-0.5">{subject.time}</div>
                                     </div>
                                   );
                                 })}
@@ -1244,47 +1241,74 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
                       })()}
                     </div>
                   ) : (
-                    /* Week View - Semana atual */
-                    <div className="grid grid-cols-7">
-                      {(() => {
-                        // Semana de 13-19 de outubro (semana que contém o dia 15)
-                        const weekDays = [13, 14, 15, 16, 17, 18, 19];
-                        
-                        return weekDays.map((day, index) => {
-                          const dayData = mockScheduleData.find(d => parseInt(d.date) === day);
-                          const isToday = day === 15; // Simulando que hoje é dia 15
-                          
-                          return (
-                            <div key={day} className={`border-r border-b border-gray-200 dark:border-gray-700 last:border-r-0 min-h-[200px] p-3 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors ${isToday ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}>
-                              <div className={`text-sm font-semibold mb-4 ${isToday ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
-                                {day}
-                                {isToday && (
-                                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-1"></div>
-                                )}
-                              </div>
-                              <div className="space-y-2">
-                                {dayData?.subjects.map((subject: any, subIndex: number) => {
-                                  const colors = subjectColors[subject.name as keyof typeof subjectColors] || subjectColors['Revisão'];
-                                  return (
-                                    <div 
-                                      key={subIndex}
-                                      className={`text-xs px-2 py-2 rounded-md border ${colors.bg} ${colors.text} ${colors.border} cursor-pointer hover:shadow-sm transition-all group`}
-                                      title={`${subject.name} - ${subject.content} (${subject.contentType}) - ${subject.time}`}
-                                    >
-                                      <div className="font-medium truncate">{subject.name}</div>
-                                      <div className="text-xs opacity-75 mt-1 truncate">
-                                        {subject.content} ({subject.contentType})
-                                      </div>
-                                      <div className="text-xs opacity-60 mt-0.5">{subject.time}</div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          );
-                        });
-                      })()}
-                    </div>
+                     /* Week View - Lista de atividades da semana */
+                     <div className="space-y-4 p-6">
+                       {(() => {
+                         // Semana de 13-19 de outubro (semana que contém o dia 15)
+                         const weekDays = [13, 14, 15, 16, 17, 18, 19];
+                         const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                         
+                         return weekDays.map((day, index) => {
+                           const dayData = mockScheduleData.find(d => parseInt(d.date) === day);
+                           const isToday = day === 15; // Simulando que hoje é dia 15
+                           const dayName = dayNames[index];
+                           
+                           if (!dayData || dayData.subjects.length === 0) {
+                             return (
+                               <div key={day} className={`border border-gray-200 dark:border-gray-700 rounded-lg p-4 ${isToday ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700' : 'bg-gray-50 dark:bg-gray-800/50'}`}>
+                                 <div className="flex items-center justify-between mb-2">
+                                   <h4 className={`font-semibold ${isToday ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                                     {dayName}, {day} de Outubro
+                                     {isToday && <span className="ml-2 text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Hoje</span>}
+                                   </h4>
+                                 </div>
+                                 <p className="text-sm text-gray-500 dark:text-gray-400 italic">Nenhuma atividade programada</p>
+                               </div>
+                             );
+                           }
+                           
+                           return (
+                             <div key={day} className={`border border-gray-200 dark:border-gray-700 rounded-lg p-4 ${isToday ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700' : 'bg-white dark:bg-gray-800'}`}>
+                               <div className="flex items-center justify-between mb-4">
+                                 <h4 className={`font-semibold ${isToday ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                                   {dayName}, {day} de Outubro
+                                   {isToday && <span className="ml-2 text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Hoje</span>}
+                                 </h4>
+                                 <span className="text-sm text-gray-500 dark:text-gray-400">
+                                   {dayData.subjects.length} atividade{dayData.subjects.length > 1 ? 's' : ''}
+                                 </span>
+                               </div>
+                               
+                               <div className="space-y-3">
+                                 {dayData.subjects.map((subject: any, subIndex: number) => {
+                                   const colors = subjectColors[subject.name as keyof typeof subjectColors] || subjectColors['Revisão'];
+                                   return (
+                                     <div 
+                                       key={subIndex}
+                                       className={`flex items-center justify-between p-3 rounded-lg border ${colors.bg} ${colors.border} hover:shadow-sm transition-all cursor-pointer group`}
+                                     >
+                                       <div className="flex items-center space-x-3">
+                                         <div className={`w-4 h-4 rounded-full ${colors.bg} ${colors.border} border-2 flex-shrink-0`}></div>
+                                         <div>
+                                           <h5 className={`font-medium ${colors.text}`}>{subject.name}</h5>
+                                           <p className={`text-sm ${colors.text} opacity-75`}>{subject.type}</p>
+                                         </div>
+                                       </div>
+                                       <div className="text-right">
+                                         <p className={`text-sm font-medium ${colors.text}`}>{subject.time}</p>
+                                         <p className={`text-xs ${colors.text} opacity-60`}>
+                                           {subject.duration || '1h'}
+                                         </p>
+                                       </div>
+                                     </div>
+                                   );
+                                 })}
+                               </div>
+                             </div>
+                           );
+                         });
+                       })()}
+                     </div>
                   )}
                 </div>
               </div>
@@ -1302,123 +1326,7 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
                 </div>
               </div>
 
-              {/* Disciplines Summary Table */}
-              <div className="mb-8">
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-                  <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Resumo das Disciplinas</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Visão geral do progresso e planejamento de estudos</p>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Disciplina</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Conteúdo</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Término</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Planos</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {disciplinesTableData.map((discipline: any, index: number) => {
-                          const colors = subjectColors[discipline.name as keyof typeof subjectColors] || subjectColors['Revisão'];
-                          
-                          return (
-                            <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                              <td className="px-6 py-4">
-                                <div className="flex items-center space-x-3">
-                                  <div className={`w-3 h-3 rounded-full ${colors.bg} ${colors.border} border`}></div>
-                                  <span className="text-sm font-medium text-gray-900 dark:text-white">{discipline.name}</span>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="flex items-center space-x-2">
-                                  <span className="text-sm font-medium text-gray-900 dark:text-white">{discipline.totalContent}</span>
-                                  <span className="text-xs text-gray-500 dark:text-gray-400">tópicos</span>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                                {discipline.completionDate}
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="flex flex-wrap gap-1">
-                                  {discipline.studyPlans.map((plan: string, planIndex: number) => (
-                                    <span 
-                                      key={planIndex}
-                                      className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
-                                    >
-                                      {plan}
-                                    </span>
-                                  ))}
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
 
-              {/* Detailed Schedule Table */}
-              <div className="mb-8">
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-                  <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Cronograma Detalhado - Hoje</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Visualização detalhada das atividades do dia</p>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Horário</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Disciplina</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Conteúdo</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Duração</th>
-                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-400">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {mockDetailedSchedule.map((item: any, index: number) => {
-                          const colors = subjectColors[item.subject as keyof typeof subjectColors] || subjectColors['Revisão'];
-                          const statusColors = {
-                            'Concluído': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
-                            'Em andamento': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
-                            'Pendente': 'bg-gray-100 dark:bg-gray-700/50 text-gray-800 dark:text-gray-300',
-                            'Agendado': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'
-                          };
-                          
-                          return (
-                            <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                              <td className="px-6 py-4 text-sm text-gray-900 dark:text-white font-medium">
-                                {item.time}
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="flex items-center space-x-3">
-                                  <div className={`w-3 h-3 rounded-full ${colors.bg} ${colors.border} border`}></div>
-                                  <span className="text-sm font-medium text-gray-900 dark:text-white">{item.subject}</span>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                                {item.type}
-                              </td>
-                              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                                {item.duration}
-                              </td>
-                              <td className="px-6 py-4">
-                                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${statusColors[item.status as keyof typeof statusColors]}`}>
-                                  {item.status}
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
 
               {/* Navigation Buttons */}
               <div className="flex justify-between mt-8">
