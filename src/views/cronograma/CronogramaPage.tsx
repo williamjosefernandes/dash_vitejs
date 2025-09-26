@@ -5,6 +5,7 @@ import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiSearch, HiViewGrid,
 import { useNavigate } from 'react-router-dom';
 import { useCronograma } from '../../hooks/useCronograma';
 import { CronogramaItem } from '../../types/cronograma';
+import CronogramaDetailView from '../../components/cronograma/CronogramaDetailView';
 
 const CronogramaPage: React.FC = () => {
   const navigate = useNavigate();
@@ -454,45 +455,6 @@ const CronogramaPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Lista de Cronogramas */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          {filteredCronogramas.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-                <Icon 
-                  icon="solar:calendar-bold-duotone" 
-                  className="w-10 h-10 text-gray-400"
-                />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                {searchTerm || filterStatus !== 'all' || filterPriority !== 'all' 
-                  ? 'Nenhum cronograma encontrado' 
-                  : 'Você ainda não criou nenhum cronograma de estudo'
-                }
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                {searchTerm || filterStatus !== 'all' || filterPriority !== 'all'
-                  ? 'Tente ajustar os filtros ou criar um novo cronograma para começar.'
-                  : 'Assim que você criar um cronograma, ele aparecerá aqui.'
-                }
-              </p>
-              <Button 
-                onClick={handleCreateCronograma}
-                className="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-              >
-                <HiPlus className="w-4 h-4 mr-2" />
-                {searchTerm || filterStatus !== 'all' || filterPriority !== 'all' 
-                  ? 'Criar Novo Cronograma' 
-                  : 'Criar Primeiro Cronograma'
-                }
-              </Button>
-            </div>
-          ) : (
-            <>
-              {viewMode === 'grid' ? <GridView /> : <ListView />}
-            </>
-          )}
-        </div>
 
         {/* Modal */}
         <Modal show={showModal} onClose={() => setShowModal(false)} size="lg">
