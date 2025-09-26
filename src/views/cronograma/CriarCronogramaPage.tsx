@@ -19,10 +19,6 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
   dailyWorkload,
   setDailyWorkload,
   timeSuggestions,
-  copyFromDay,
-  setCopyFromDay,
-  copyToDay,
-  setCopyToDay,
   viewMode,
   setViewMode,
   currentMonth,
@@ -30,7 +26,6 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
   currentYear,
   setCurrentYear,
   mockScheduleData,
-  mockDetailedSchedule,
   subjectColors,
   studyStartDate,
   setStudyStartDate,
@@ -60,7 +55,7 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
 }) => {
   // Estados locais
   const [disciplineChangeFrequency, setDisciplineChangeFrequency] = useState('A cada 2 subtópicos');
-  const [showCopySidebar, setShowCopySidebar] = useState(false);
+
 
   const toggleDayEnabled = (dayIndex: number) => {
     setWeekSchedule(prev => {
@@ -70,26 +65,7 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
     });
   };
 
-  const copySchedule = () => {
-    if (!copyFromDay || !copyToDay) return;
-    
-    const fromIndex = weekSchedule.findIndex(day => day.day === copyFromDay);
-    const toIndex = weekSchedule.findIndex(day => day.day === copyToDay);
-    
-    if (fromIndex !== -1 && toIndex !== -1) {
-      setWeekSchedule(prev => {
-        const updated = [...prev];
-        updated[toIndex] = {
-          ...updated[toIndex],
-          startTime: updated[fromIndex].startTime,
-          endTime: updated[fromIndex].endTime,
-          totalHours: updated[fromIndex].totalHours,
-          enabled: updated[fromIndex].enabled
-        };
-        return updated;
-      });
-    }
-  };
+
 
   const filteredCourses = (courses || []).filter(course =>
     course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -677,7 +653,7 @@ const CriarCronogramaPage: React.FC<CriarCronogramaPageProps> = ({
                     <div className="mt-6 flex justify-center">
                       <button
                         type="button"
-                        onClick={() => setShowCopySidebar(true)}
+                        onClick={() => console.log('Copy schedule functionality')}
                         className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                       >
                         <Icon icon="solar:copy-bold" className="w-4 h-4" />

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Select, ToggleSwitch } from 'flowbite-react';
+import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Select } from 'flowbite-react';
 import { Icon } from '@iconify/react';
 import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiClock, HiAcademicCap, HiTrendingUp, HiSearch, HiViewGrid, HiViewList } from 'react-icons/hi';
 import { mockSubjects } from '../../data/mockData';

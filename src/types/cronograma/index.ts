@@ -43,6 +43,15 @@ export interface WeekScheduleDay {
   totalHours: string;
 }
 
+export interface ScheduleSubject {
+  name: string;
+  time: string;
+  duration: string;
+  type: string;
+  content: string;
+  contentType: string;
+}
+
 export interface StudySequenceItem {
   id: string;
   order: number;
@@ -53,11 +62,7 @@ export interface StudySequenceItem {
 
 export interface ScheduleDataItem {
   date: string;
-  subjects: Array<{
-    name: string;
-    time: string;
-    duration: string;
-  }>;
+  subjects: ScheduleSubject[];
 }
 
 export interface ScheduleData extends Array<ScheduleDataItem> {}
@@ -68,7 +73,8 @@ export interface DetailedScheduleItem {
   subject: string;
   content: string;
   duration: string;
-  status: 'Concluído' | 'Em andamento' | 'Pendente';
+  status: 'Concluído' | 'Em andamento' | 'Pendente' | 'Agendado';
+  type: string;
 }
 
 export interface DetailedSchedule extends Array<DetailedScheduleItem> {}
@@ -92,6 +98,33 @@ export interface DisciplineTableData {
   totalContent: number;
   completionDate: string;
   studyPlans: string[];
+}
+
+export interface CronogramaItem {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  status: 'Ativo' | 'Pausado' | 'Concluído' | 'Cancelado';
+  priority: 'Alta' | 'Média' | 'Baixa';
+  totalHours: number;
+  completedHours: number;
+  subjects: string[];
+  progress: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CronogramaFormData {
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  status: 'Ativo' | 'Pausado' | 'Concluído' | 'Cancelado';
+  priority: 'Alta' | 'Média' | 'Baixa';
+  totalHours: number;
+  subjects: string[];
 }
 
 export interface CriarCronogramaPageProps {

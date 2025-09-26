@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Alert } from 'flowbite-react';
-import { HiTrash, HiX, HiExclamationTriangle } from 'react-icons/hi';
+import { HiTrash, HiX, HiExclamationCircle } from 'react-icons/hi';
 import { HistoryRecord } from '../../types/history';
 
 interface DeleteConfirmModalProps {
@@ -62,14 +62,14 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
     <Modal show={isOpen} onClose={onClose} size="md">
       <Modal.Header>
         <div className="flex items-center gap-2">
-          <HiExclamationTriangle className="h-5 w-5 text-red-500" />
+          <HiExclamationCircle className="h-5 w-5 text-red-500" />
           Confirmar Exclusão
         </div>
       </Modal.Header>
       
       <Modal.Body>
         <div className="space-y-4">
-          <Alert color="warning" icon={HiExclamationTriangle}>
+          <Alert color="warning" icon={HiExclamationCircle}>
             <span className="font-medium">Atenção!</span> Esta ação não pode ser desfeita. 
             O registro será permanentemente removido do seu histórico.
           </Alert>
@@ -111,7 +111,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Duração:</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {formatDuration(record.duration)}
+                  {formatDuration(record.duration || 0)}
                 </span>
               </div>
               

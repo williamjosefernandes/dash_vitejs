@@ -41,9 +41,9 @@ const StudyPlanCard: React.FC<StudyPlanCardProps> = ({
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner': return 'green';
-      case 'intermediate': return 'yellow';
-      case 'advanced': return 'red';
+      case 'iniciante': return 'green';
+      case 'intermediario': return 'yellow';
+      case 'avancado': return 'red';
       default: return 'gray';
     }
   };
@@ -144,8 +144,8 @@ const StudyPlanCard: React.FC<StudyPlanCardProps> = ({
         {/* Badges de Dificuldade */}
         <div className="flex gap-2 flex-shrink-0">
           <Badge color={getDifficultyColor(studyPlan.difficulty)} size="sm">
-            {studyPlan.difficulty === 'beginner' ? 'Iniciante' : 
-             studyPlan.difficulty === 'intermediate' ? 'Intermediário' : 'Avançado'}
+            {studyPlan.difficulty === 'iniciante' ? 'Iniciante' : 
+             studyPlan.difficulty === 'intermediario' ? 'Intermediário' : 'Avançado'}
           </Badge>
         </div>
 

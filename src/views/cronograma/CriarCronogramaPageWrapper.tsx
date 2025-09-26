@@ -356,7 +356,7 @@ const CriarCronogramaPageWrapper: React.FC = () => {
     ));
   };
 
-  const toggleTopicExpansion = (disciplineId: string, topicId: string) => {
+  const toggleTopicExpansion = (_disciplineId: string, topicId: string) => {
     setDisciplines(prev => prev.map(discipline => ({
       ...discipline,
       topics: discipline.topics?.map(topic =>
@@ -365,7 +365,7 @@ const CriarCronogramaPageWrapper: React.FC = () => {
     })));
   };
 
-  const toggleTopicSelection = (disciplineId: string, topicId: string) => {
+  const toggleTopicSelection = (_disciplineId: string, topicId: string) => {
     setDisciplines(prev => prev.map(discipline => ({
       ...discipline,
       topics: discipline.topics?.map(topic =>
@@ -374,7 +374,7 @@ const CriarCronogramaPageWrapper: React.FC = () => {
     })));
   };
 
-  const toggleSubtopicSelection = (disciplineId: string, topicId: string, subtopicId: string) => {
+  const toggleSubtopicSelection = (_disciplineId: string, _topicId: string, subtopicId: string) => {
     setDisciplines(prev => prev.map(discipline => ({
       ...discipline,
       topics: discipline.topics?.map(topic => ({

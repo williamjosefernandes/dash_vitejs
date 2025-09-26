@@ -3,7 +3,7 @@ import { Modal, Button, TextInput, Textarea, Select, Alert } from 'flowbite-reac
 import { HiX, HiPlus, HiInformationCircle } from 'react-icons/hi';
 import { Icon } from '@iconify/react';
 import { Trail } from '../../types/trails';
-import { StudyPlan, StudyPlanCategory, StudyPlanDifficulty } from '../../types/studyPlans';
+import { StudyPlan, StudyPlanCategory, DifficultyLevel } from '../../types/studyPlans';
 
 interface CreatePlanModalProps {
   isOpen: boolean;
@@ -16,7 +16,7 @@ interface PlanFormData {
   title: string;
   description: string;
   category: StudyPlanCategory;
-  difficulty: StudyPlanDifficulty;
+  difficulty: DifficultyLevel;
   dailyHours: number;
   startDate: string;
   endDate: string;
@@ -32,7 +32,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
     title: '',
     description: '',
     category: 'geral' as StudyPlanCategory,
-    difficulty: 'iniciante' as StudyPlanDifficulty,
+    difficulty: 'iniciante' as DifficultyLevel,
     dailyHours: 2,
     startDate: new Date().toISOString().split('T')[0],
     endDate: ''
@@ -51,7 +51,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
         title: `Plano baseado em: ${trail.title}`,
         description: `Plano de estudos criado a partir da trilha "${trail.title}". ${trail.shortDescription}`,
         category: trail.category as StudyPlanCategory,
-        difficulty: trail.difficulty as StudyPlanDifficulty,
+        difficulty: trail.difficulty as DifficultyLevel,
         dailyHours: Math.ceil(trail.weeklyHours / 7),
         startDate: new Date().toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0]
@@ -169,7 +169,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
         title: '',
         description: '',
         category: 'geral' as StudyPlanCategory,
-        difficulty: 'iniciante' as StudyPlanDifficulty,
+        difficulty: 'iniciante' as DifficultyLevel,
         dailyHours: 2,
         startDate: new Date().toISOString().split('T')[0],
         endDate: ''
@@ -194,7 +194,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
     return labels[category] || category;
   };
 
-  const getDifficultyLabel = (difficulty: StudyPlanDifficulty) => {
+  const getDifficultyLabel = (difficulty: DifficultyLevel) => {
     const labels = {
       'iniciante': 'Iniciante',
       'intermediario': 'Intermediário',
@@ -291,7 +291,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
               </label>
               <Select
                 value={formData.difficulty}
-                onChange={(e) => handleInputChange('difficulty', e.target.value as StudyPlanDifficulty)}
+                onChange={(e) => handleInputChange('difficulty', e.target.value as DifficultyLevel)}
               >
                 <option value="iniciante">Iniciante</option>
                 <option value="intermediario">Intermediário</option>

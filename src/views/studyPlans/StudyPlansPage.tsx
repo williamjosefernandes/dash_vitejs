@@ -8,7 +8,7 @@ import StudyPlanCard from '../../components/studyPlans/StudyPlanCard';
 
 // Tipos e dados
 import { StudyPlan, StudyPlanFilters } from '../../types/studyPlans';
-import { mockStudyPlansNew, mockStudyPlanStats } from '../../data/mockData/studyPlansNew';
+import { mockStudyPlansNew } from '../../data/mockData/studyPlansNew';
 
 const StudyPlansPage: React.FC = () => {
   const [studyPlans, setStudyPlans] = useState<StudyPlan[]>(mockStudyPlansNew);
@@ -30,7 +30,7 @@ const StudyPlansPage: React.FC = () => {
       const matchesSearch = !filters.searchTerm || 
         plan.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
         plan.description.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        plan.tags.some(tag => tag.toLowerCase().includes(filters.searchTerm.toLowerCase()));
+        plan.tags.some(tag => tag.toLowerCase().includes(filters.searchTerm!.toLowerCase()));
       
       const matchesCategory = !filters.category || plan.category === filters.category;
       const matchesStatus = !filters.status || plan.status === filters.status;
@@ -112,17 +112,6 @@ const StudyPlansPage: React.FC = () => {
   const handleCreatePlan = () => {
     console.log('Criar novo plano');
     // Implementar criação de novo plano
-  };
-
-  const clearFilters = () => {
-    setFilters({
-      searchTerm: '',
-      category: undefined,
-      status: undefined,
-      difficulty: undefined,
-      sortBy: 'title',
-      sortOrder: 'asc'
-    });
   };
 
   // Componente para visualização em Grid

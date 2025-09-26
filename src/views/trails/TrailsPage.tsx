@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Card, Button, Badge, Progress, Dropdown, Modal, TextInput, Textarea, Select } from 'flowbite-react';
+import { Card, Button, Badge, Dropdown, Modal, TextInput, Textarea, Select } from 'flowbite-react';
 import { Icon } from '@iconify/react';
-import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiClock, HiAcademicCap, HiTrendingUp, HiSearch, HiViewGrid, HiViewList, HiStar, HiUsers, HiBookOpen, HiLightBulb } from 'react-icons/hi';
-import { mockTrails, mockTrailStats } from '../../data/mockData/trails';
+import { HiPlus, HiDotsVertical, HiPencil, HiTrash, HiEye, HiSearch, HiViewGrid, HiViewList, HiStar, HiBookOpen, HiTrendingUp, HiLightBulb } from 'react-icons/hi';
+import { mockTrails } from '../../data/mockData/trails';
 import { Trail, TrailCategory, TrailDifficulty } from '../../types/trails';
 
 const TrailsPage: React.FC = () => {
@@ -12,7 +12,7 @@ const TrailsPage: React.FC = () => {
   const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'ativo' | 'inativo' | 'rascunho'>('all');
-  const [filterDifficulty, setFilterDifficulty] = useState<'all' | 'basico' | 'intermediario' | 'avancado'>('all');
+  const [filterDifficulty, setFilterDifficulty] = useState<'all' | 'iniciante' | 'intermediario' | 'avancado'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Formulário
@@ -161,7 +161,7 @@ const TrailsPage: React.FC = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'basico': return 'green';
+      case 'iniciante': return 'green';
       case 'intermediario': return 'yellow';
       case 'avancado': return 'red';
       default: return 'gray';
@@ -198,7 +198,7 @@ const TrailsPage: React.FC = () => {
 
   const getDifficultyLabel = (difficulty: TrailDifficulty) => {
     switch (difficulty) {
-      case 'basico': return 'Básico';
+      case 'iniciante': return 'Iniciante';
       case 'intermediario': return 'Intermediário';
       case 'avancado': return 'Avançado';
       default: return difficulty;
@@ -510,7 +510,7 @@ const TrailsPage: React.FC = () => {
               </Select>
               <Select value={filterDifficulty} onChange={(e) => setFilterDifficulty(e.target.value as any)}>
                 <option value="all">Todas as dificuldades</option>
-                <option value="basico">Básico</option>
+                <option value="iniciante">Iniciante</option>
                 <option value="intermediario">Intermediário</option>
                 <option value="avancado">Avançado</option>
               </Select>
@@ -636,7 +636,7 @@ const TrailsPage: React.FC = () => {
                    disabled={modalMode === 'view'}
                    className="w-full"
                  >
-                   <option value="basico">Básico</option>
+                   <option value="iniciante">Iniciante</option>
                    <option value="intermediario">Intermediário</option>
                    <option value="avancado">Avançado</option>
                  </Select>
