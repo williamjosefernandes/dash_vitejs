@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Button, Spinner, Toast } from 'flowbite-react';
-import { HiDownload, HiCheck, HiX, HiClock, HiBookOpen, HiAcademicCap, HiPlus } from 'react-icons/hi';
+import { HiDownload, HiCheck, HiX, HiClock, HiBookOpen, HiAcademicCap } from 'react-icons/hi';
 import { Icon } from '@iconify/react';
 import HistoryFilters from '../../components/history/HistoryFilters';
 import HistoryTimeline from '../../components/history/HistoryTimeline';

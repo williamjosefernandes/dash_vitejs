@@ -127,6 +127,53 @@ export interface CronogramaFormData {
   subjects: string[];
 }
 
+// Tipos para o sistema de cronômetro de estudos
+export interface StudyTimer {
+  id: string;
+  disciplineId: string;
+  isRunning: boolean;
+  startTime: number | null;
+  totalTime: number; // tempo total em milissegundos
+  sessions: StudySession[];
+}
+
+export interface StudySession {
+  id: string;
+  startTime: number;
+  endTime: number;
+  duration: number; // duração em milissegundos
+  date: string; // formato YYYY-MM-DD
+}
+
+export interface StudyDiscipline {
+  id: string;
+  name: string;
+  content: string[];
+  color: string;
+  totalStudyTime: number; // tempo total estudado em milissegundos
+  targetHours?: number; // meta de horas de estudo
+  priority: 'Alta' | 'Média' | 'Baixa';
+  status: 'Ativo' | 'Pausado' | 'Concluído';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StudyStats {
+  totalTime: number;
+  todayTime: number;
+  weekTime: number;
+  monthTime: number;
+  averageSessionTime: number;
+  totalSessions: number;
+  disciplineStats: {
+    [disciplineId: string]: {
+      totalTime: number;
+      sessions: number;
+      lastStudied: string;
+    };
+  };
+}
+
 export interface CriarCronogramaPageProps {
   steps: Step[];
   currentStep: number;
