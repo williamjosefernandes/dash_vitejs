@@ -325,7 +325,7 @@ const AgilePlanningPage: React.FC = () => {
 
   const handleCancelCycle = (cycleId: string) => {
     if (currentCycle?.id === cycleId) {
-      setCurrentCycle((prev: StudyCycle | undefined) => prev ? { ...prev, status: 'cancelado' } : prev);
+      setCurrentCycle((prev: StudyCycle | null) => prev ? { ...prev, status: 'cancelado' } : prev);
     }
   };
 

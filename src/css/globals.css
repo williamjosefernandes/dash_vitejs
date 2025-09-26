@@ -23,15 +23,11 @@
   }
 
   html {
-    @apply overflow-x-hidden h-full;
+    @apply overflow-x-hidden;
   }
 
   body {
-    @apply text-sm text-bodytext h-full;
-  }
-
-  #root {
-    @apply h-full;
+    @apply text-sm text-bodytext;
   }
 
   .dropdown {

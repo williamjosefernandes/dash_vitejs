@@ -6,6 +6,7 @@ import NavItems from "./NavItems";
 import SimpleBar from "simplebar-react";
 import React from "react";
 import FullLogo from "../shared/logo/FullLogo";
+import Upgrade from "./Upgrade";
 import NavCollapse from "./NavCollapse";
 
 const SidebarLayout = () => {
@@ -15,10 +16,10 @@ const SidebarLayout = () => {
     <>
       <div className="xl:block hidden">
         <Sidebar
-          className="fixed menu-sidebar pt-0 bg-white dark:bg-darkgray transition-all"
+          className="fixed menu-sidebar  bg-white dark:bg-darkgray rtl:pe-4 rtl:ps-0 top-[72px]"
           aria-label="Sidebar with multi-level dropdown example"
         >
-          <div className="px-6 py-6 flex items-center sidebarlogo">
+          <div className="px-6 py-4 flex items-center sidebarlogo">
             <FullLogo />
           </div>
           <SimpleBar className="h-[calc(100vh_-_294px)]">
@@ -32,22 +33,23 @@ const SidebarLayout = () => {
                           {item.heading}
                         </h5>
                         {item.children?.map((child, index) => (
-                          <React.Fragment key={child.id && index}>
-                            {child.children ? (
-                              <div className="collpase-items">
-                                <NavCollapse item={child} />
-                              </div>
-                            ) : (
-                              <NavItems item={child} />
-                            )}
-                          </React.Fragment>
-                        ))}
+                        <React.Fragment key={child.id && index}>
+                          {child.children ? (
+                            <div className="collpase-items">
+                              <NavCollapse item={child} />
+                            </div>
+                          ) : (
+                            <NavItems item={child} />
+                          )}
+                        </React.Fragment>
+                      ))}
                       </React.Fragment>
                     </div>
                   ))}
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           </SimpleBar>
+          <Upgrade/>
         </Sidebar>
       </div>
     </>

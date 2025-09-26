@@ -203,7 +203,7 @@ const PostagensTab: React.FC = () => {
               <img
                 src={post.thumbnail}
                 alt={post.title}
-                className="w-full h-48 object-cover object-top"
+                className="w-full h-48 object-cover"
               />
               
               {/* Ícone da Rede Social */}
@@ -316,7 +316,7 @@ const PostagensTab: React.FC = () => {
                 <img
                   src={selectedPost.thumbnail}
                   alt={selectedPost.title}
-                  className="w-32 h-32 object-cover object-top rounded-lg"
+                  className="w-32 h-32 object-cover rounded-lg"
                 />
                 <div className="flex-1">
                   <h3 className="text-xl font-bold mb-2">{selectedPost.title}</h3>

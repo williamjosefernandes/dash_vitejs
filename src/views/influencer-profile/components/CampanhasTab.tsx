@@ -307,7 +307,7 @@ const CampanhasTab: React.FC = () => {
                 <img
                   src={campaign.brandLogo}
                   alt={campaign.brand}
-                  className="w-12 h-12 rounded-lg object-cover object-top"
+                  className="w-12 h-12 rounded-lg object-cover"
                 />
                 <div className="flex-1">
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
