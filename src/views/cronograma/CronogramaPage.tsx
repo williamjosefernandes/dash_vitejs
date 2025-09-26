@@ -189,6 +189,16 @@ const CronogramaPage: React.FC = () => {
                 Gerencie seus tópicos e cronômetros de estudo
               </p>
             </div>
+            
+            {/* Botão Adicionar Conteúdo */}
+            <Button
+              onClick={handleAddContent}
+              className="bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+              title="Adicionar novo conteúdo de estudo"
+            >
+              <HiDocumentAdd className="w-4 h-4 mr-2" />
+              Adicionar Conteúdo
+            </Button>
           </div>
           
           <StudyTimerList />
