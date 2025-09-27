@@ -10,25 +10,47 @@ import {
   HiTrash,
   HiTrendingUp,
   HiClock,
-  HiBookOpen
+  HiBookOpen,
+  HiPlay
 } from 'react-icons/hi';
 import { StudyDisciplineWithTopics } from '../../types/cronograma/studyTopic';
 
+interface StudyScheduleItem {
+  id: string;
+  startTime: string;
+  endTime: string;
+  subject: string;
+  topic: string;
+  type: 'class' | 'study' | 'review';
+  status: 'pending' | 'in_progress' | 'completed';
+  color: string;
+}
+
+interface StudyDaySchedule {
+  date: string;
+  dayName: string;
+  dayNumber: number;
+  items: StudyScheduleItem[];
+}
+
 interface StudyDisciplineHeaderProps {
-  discipline: StudyDisciplineWithTopics;
-  isExpanded: boolean;
-  onToggleExpansion: () => void;
-  onAddTopic: () => void;
-  onEdit: () => void;
-  onDelete: () => void;
-  getFormattedTime: (milliseconds: number) => string;
-  completedTopics: number;
-  inProgressTopics: number;
-  viewMode?: 'grid' | 'list' | 'calendar';
+  discipline?: StudyDisciplineWithTopics;
+  scheduleData?: StudyDaySchedule[];
+  isExpanded?: boolean;
+  onToggleExpansion?: () => void;
+  onAddTopic?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  getFormattedTime?: (milliseconds: number) => string;
+  completedTopics?: number;
+  inProgressTopics?: number;
+  viewMode?: 'grid' | 'list' | 'calendar' | 'schedule';
+  onStartStudy?: (itemId: string) => void;
 }
 
 const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
   discipline,
+  scheduleData,
   isExpanded,
   onToggleExpansion,
   onAddTopic,
@@ -38,7 +60,175 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
   completedTopics,
   inProgressTopics,
   viewMode = 'list',
+  onStartStudy,
 }) => {
+  // Se for modo cronograma, renderizar layout específico
+  if (viewMode === 'schedule' && scheduleData) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        {/* Header do cronograma */}
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                <Icon 
+                  icon="solar:calendar-bold-duotone" 
+                  className="h-6 w-6 text-blue-600 dark:text-blue-400"
+                />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Cronograma de Estudos
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Data de finalização do cronograma: 16/02/2026
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button size="sm" color="blue">
+                <HiPlus className="w-4 h-4 mr-1" />
+                Adicionar
+              </Button>
+              <Dropdown
+                label=""
+                dismissOnClick={false}
+                renderTrigger={() => (
+                  <Button size="sm" color="gray">
+                    <HiDotsVertical className="w-4 h-4" />
+                  </Button>
+                )}
+              >
+                <Dropdown.Item icon={HiPencil}>Editar cronograma</Dropdown.Item>
+                <Dropdown.Item icon={HiTrash} className="text-red-600">Excluir</Dropdown.Item>
+              </Dropdown>
+            </div>
+          </div>
+        </div>
+
+        {/* Lista de dias */}
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          {scheduleData.map((day) => (
+            <div key={day.date} className="p-6">
+              {/* Header do dia */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                    {day.dayNumber}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {day.dayName}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {day.date}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  color="gray"
+                  onClick={onToggleExpansion}
+                  className="p-2"
+                >
+                  {isExpanded ? (
+                    <HiChevronDown className="w-4 h-4" />
+                  ) : (
+                    <HiChevronRight className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+
+              {/* Lista de atividades do dia */}
+              <div className="space-y-3">
+                {day.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    {/* Horário */}
+                    <div className="flex-shrink-0 text-center min-w-[80px]">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        {item.startTime}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        {item.endTime}
+                      </div>
+                    </div>
+
+                    {/* Indicador de cor */}
+                    <div
+                      className="w-1 h-12 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: item.color }}
+                    />
+
+                    {/* Conteúdo */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-1">
+                          {item.subject}
+                        </h4>
+                        <Badge
+                          color={
+                            item.type === 'class' ? 'blue' :
+                            item.type === 'study' ? 'green' : 'yellow'
+                          }
+                          size="xs"
+                        >
+                          {item.type === 'class' ? 'Aula' :
+                           item.type === 'study' ? 'Estudo' : 'Revisão'}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
+                        {item.topic}
+                      </p>
+                    </div>
+
+                    {/* Status e ações */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-1">
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            item.status === 'completed' ? 'bg-green-500' :
+                            item.status === 'in_progress' ? 'bg-yellow-500' :
+                            'bg-gray-300'
+                          }`}
+                        />
+                      </div>
+                      
+                      {item.status === 'pending' && onStartStudy && (
+                        <Button
+                          size="xs"
+                          color="blue"
+                          onClick={() => onStartStudy(item.id)}
+                          className="px-2 py-1"
+                        >
+                          <HiPlay className="w-3 h-3" />
+                        </Button>
+                      )}
+                      
+                      <Dropdown
+                        label=""
+                        dismissOnClick={false}
+                        renderTrigger={() => (
+                          <Button size="xs" color="gray" className="p-1">
+                            <HiDotsVertical className="w-3 h-3" />
+                          </Button>
+                        )}
+                      >
+                        <Dropdown.Item icon={HiPencil}>Editar</Dropdown.Item>
+                        <Dropdown.Item icon={HiTrash} className="text-red-600">Excluir</Dropdown.Item>
+                      </Dropdown>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
   // Obter cor do status
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -69,16 +259,19 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
 
   // Calcular progresso geral da disciplina
   const getProgressPercentage = () => {
-    if (discipline.topics.length === 0) return 0;
-    return (completedTopics / discipline.topics.length) * 100;
+    if (!discipline || discipline.topics.length === 0) return 0;
+    return ((completedTopics || 0) / discipline.topics.length) * 100;
   };
 
   // Calcular progresso da meta de horas
   const getHoursProgressPercentage = () => {
-    if (!discipline.targetHours) return 0;
+    if (!discipline || !discipline.targetHours) return 0;
     const hoursStudied = discipline.totalStudyTime / (1000 * 60 * 60);
     return Math.min((hoursStudied / discipline.targetHours) * 100, 100);
   };
+
+  // Se não há disciplina, retornar null
+  if (!discipline) return null;
 
   return (
     <div 
@@ -96,7 +289,7 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
       <div className={`flex items-center justify-between ${viewMode === 'grid' || viewMode === 'calendar' ? 'mb-3' : 'mb-4'}`}>
         <div className="flex items-center flex-1 min-w-0">
           {/* Botão de expansão - apenas no modo lista */}
-          {viewMode === 'list' && (
+          {viewMode === 'list' && onToggleExpansion && (
             <Button
               size="sm"
               color="gray"
@@ -163,11 +356,11 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
               </article>
               <article className="flex items-center gap-1">
                 <HiTrendingUp className="w-4 h-4" />
-                <output>{completedTopics} concluídos</output>
+                <output>{completedTopics || 0} concluídos</output>
               </article>
               <article className="flex items-center gap-1">
                 <HiClock className="w-4 h-4" />
-                <time>{getFormattedTime(discipline.totalStudyTime)}</time>
+                <time>{getFormattedTime ? getFormattedTime(discipline.totalStudyTime) : '0h'}</time>
               </article>
             </section>
           </div>
@@ -175,47 +368,55 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
 
         {/* Ações */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <Button
-            size="sm"
-            onClick={onAddTopic}
-            className={`${
-              viewMode === 'grid' || viewMode === 'calendar' 
-                ? 'bg-blue-600 hover:bg-blue-700 text-white px-2 py-1' 
-                : 'bg-blue-600 hover:bg-blue-700'
-            }`}
-            title="Adicionar tópico"
-          >
-            <HiPlus className={`${viewMode === 'grid' || viewMode === 'calendar' ? 'w-3 h-3' : 'w-4 h-4'}`} />
-            {viewMode === 'list' && <span className="ml-1">Tópico</span>}
-          </Button>
+          {onAddTopic && (
+            <Button
+              size="sm"
+              onClick={onAddTopic}
+              className={`${
+                viewMode === 'grid' || viewMode === 'calendar' 
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white px-2 py-1' 
+                  : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+              title="Adicionar tópico"
+            >
+              <HiPlus className={`${viewMode === 'grid' || viewMode === 'calendar' ? 'w-3 h-3' : 'w-4 h-4'}`} />
+              {viewMode === 'list' && <span className="ml-1">Tópico</span>}
+            </Button>
+          )}
 
-          <Dropdown
-            label=""
-            dismissOnClick={false}
-            renderTrigger={() => (
-              <Button
-                size="sm"
-                color="gray"
-                className={`${
-                  viewMode === 'grid' || viewMode === 'calendar' 
-                    ? 'p-1' 
-                    : 'p-2'
-                }`}
-              >
-                <HiDotsVertical className={`${viewMode === 'grid' || viewMode === 'calendar' ? 'w-3 h-3' : 'w-4 h-4'}`} />
-              </Button>
-            )}
-          >
-            <Dropdown.Item onClick={onEdit} icon={HiPencil}>
-              Editar
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onDelete} icon={HiTrash} className="text-red-600 dark:text-red-400">
-              Excluir
-            </Dropdown.Item>
-          </Dropdown>
+          {(onEdit || onDelete) && (
+            <Dropdown
+              label=""
+              dismissOnClick={false}
+              renderTrigger={() => (
+                <Button
+                  size="sm"
+                  color="gray"
+                  className={`${
+                    viewMode === 'grid' || viewMode === 'calendar' 
+                      ? 'p-1' 
+                      : 'p-2'
+                  }`}
+                >
+                  <HiDotsVertical className={`${viewMode === 'grid' || viewMode === 'calendar' ? 'w-3 h-3' : 'w-4 h-4'}`} />
+                </Button>
+              )}
+            >
+              {onEdit && (
+                <Dropdown.Item onClick={onEdit} icon={HiPencil}>
+                  Editar
+                </Dropdown.Item>
+              )}
+              {onDelete && (
+                <Dropdown.Item onClick={onDelete} icon={HiTrash} className="text-red-600 dark:text-red-400">
+                  Excluir
+                </Dropdown.Item>
+              )}
+            </Dropdown>
+          )}
 
           {/* Botão de expansão para grid/calendar */}
-          {(viewMode === 'grid' || viewMode === 'calendar') && (
+          {(viewMode === 'grid' || viewMode === 'calendar') && onToggleExpansion && (
             <Button
               size="sm"
               color="gray"
@@ -302,19 +503,19 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
           <section className="grid grid-cols-3 gap-4 text-center">
             <article className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
               <output className="text-lg font-bold text-gray-600 dark:text-gray-300">
-                {discipline.topics.length - completedTopics - inProgressTopics}
+                {discipline.topics.length - (completedTopics || 0) - (inProgressTopics || 0)}
               </output>
               <small className="text-xs text-gray-500 dark:text-gray-400">Não estudados</small>
             </article>
             <article className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3">
               <output className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                {inProgressTopics}
+                {inProgressTopics || 0}
               </output>
               <small className="text-xs text-gray-500 dark:text-gray-400">Em progresso</small>
             </article>
             <article className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
               <output className="text-lg font-bold text-green-600 dark:text-green-400">
-                {completedTopics}
+                {completedTopics || 0}
               </output>
               <small className="text-xs text-gray-500 dark:text-gray-400">Concluídos</small>
             </article>
@@ -326,13 +527,13 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
       {isExpanded && discipline.topics.length > 0 && (viewMode === 'grid' || viewMode === 'calendar') && (
         <div className="mt-2 flex justify-center space-x-4 text-xs">
           <span className="text-gray-500 dark:text-gray-400">
-            {discipline.topics.length - completedTopics - inProgressTopics} não estudados
+            {discipline.topics.length - (completedTopics || 0) - (inProgressTopics || 0)} não estudados
           </span>
           <span className="text-orange-500 dark:text-orange-400">
-            {inProgressTopics} em progresso
+            {inProgressTopics || 0} em progresso
           </span>
           <span className="text-green-500 dark:text-green-400">
-            {completedTopics} concluídos
+            {completedTopics || 0} concluídos
           </span>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { StudyDisciplineWithTopics, StudyTopic, StudyTopicSession, StudyTopicStats, StudyTopicStatus } from '../types/cronograma/studyTopic';
+import { mockDisciplines } from '../data/mockData/cronogramaMockData';
 
 const STORAGE_KEY = 'study-topic-timer-data';
 
@@ -37,7 +38,12 @@ export const useStudyTopicTimer = (): UseStudyTopicTimerReturn => {
         setDisciplines(parsedData.disciplines || []);
       } catch (error) {
         console.error('Erro ao carregar dados do localStorage:', error);
+        // Em caso de erro, usar dados mockados
+        setDisciplines(mockDisciplines);
       }
+    } else {
+      // Se não há dados salvos, usar dados mockados
+      setDisciplines(mockDisciplines);
     }
   }, []);
 

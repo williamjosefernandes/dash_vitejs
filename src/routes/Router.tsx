@@ -30,6 +30,7 @@ const HistoryPage = lazy(() => import('../views/history/HistoryPage'));
 const StatisticsPage = lazy(() => import('../views/statistics/StatisticsPage'));
 const CronogramaPage = lazy(() => import('../views/cronograma/CronogramaPage'));
 const CriarCronogramaPage = lazy(() => import('../views/cronograma/CriarCronogramaPageWrapper'));
+const ScheduleExample = lazy(() => import('../components/cronograma/ScheduleExample'));
 const StudyPlansPage = lazy(() => import('../views/studyPlans/StudyPlansPage'));
 const SettingsPage = lazy(() => import('../views/settings/SettingsPage'));
 
@@ -58,6 +59,7 @@ const routerConfig = [
       { path: '/statistics', exact: true, element: <StatisticsPage /> },
       { path: '/cronograma', exact: true, element: <CronogramaPage /> },
       { path: '/cronograma/criar', exact: true, element: <CriarCronogramaPage /> },
+      { path: '/cronograma/teste', exact: true, element: <ScheduleExample /> },
       { path: '/study-plans', exact: true, element: <StudyPlansPage /> },
       { path: '/settings', exact: true, element: <SettingsPage /> },
       
