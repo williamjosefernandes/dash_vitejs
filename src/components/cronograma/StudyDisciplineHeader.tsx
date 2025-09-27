@@ -65,30 +65,30 @@ const StudyDisciplineHeader: React.FC<StudyDisciplineHeaderProps> = ({
   // Se for modo cronograma, renderizar layout específico
   if (viewMode === 'schedule' && scheduleData) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div>
         {/* Header do cronograma */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                <Icon 
-                  icon="solar:calendar-bold-duotone" 
+                <Icon
+                  icon="solar:calendar-bold-duotone"
                   className="h-6 w-6 text-blue-600 dark:text-blue-400"
                 />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Cronograma de Estudos
+                  Meus Estudos
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Data de finalização do cronograma: 16/02/2026
+                  Lista de conteúdos para estudo
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Button size="sm" color="blue">
                 <HiPlus className="w-4 h-4 mr-1" />
-                Adicionar
+                Adicionar Conteúdo
               </Button>
               <Dropdown
                 label=""

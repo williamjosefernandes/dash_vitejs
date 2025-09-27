@@ -128,7 +128,7 @@ const ScheduleExample: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
       <StudyDisciplineHeader
         viewMode="schedule"
         scheduleData={mockScheduleData}
